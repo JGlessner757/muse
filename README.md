@@ -20,7 +20,7 @@ Anyone who believes in the magic of turning pictures into words!
 -**Genre and Style Flexibility**: In future releases, you’ll be able to choose a specific genre or lyrical style to better match your artistic direction.
 -**Simple and Lightweight**: Muse is designed to be straightforward, intuitive, and fast. Get lyrics in seconds without a complex setup.
 
-## 🚀 How to Use Muse##
+## 🚀 How to Use Muse ##
 
 Upload an Image: Choose an image that you find inspiring, whether it’s a landscape, a candid moment, or a still life.
 Generate Lyrics: Click "Generate Lyrics" to let Muse analyze the image and create lyrics.
@@ -35,7 +35,7 @@ Use or Share: Use the lyrics as a foundation for your song, or share them on soc
 # 🌐 Deployment # 
 Muse is hosted on AWS Amplify for seamless and scalable deployment. The app is cloud-native, designed to be accessible from any device with a browser.
 
-## 📖 Example Use Cases##
+## 📖 Example Use Cases ##
 
 Writers’ Block: Stuck on a song? Use Muse to kickstart ideas with visuals.
 
