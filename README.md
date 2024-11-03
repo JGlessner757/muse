@@ -2,8 +2,6 @@
 
 Welcome to **Muse**, your personal AI-powered songwriting assistant! Muse transforms images into evocative song lyrics, helping you find inspiration from the world around you. Whether you’re a seasoned songwriter or a budding lyricist, Muse is a lightweight, easy-to-use tool that turns visual moments into lyrical magic.
 
-*(Replace with an actual image/screenshot of the app)*
-
 ## 🌟 What is Muse?
 
 Muse is a web app that uses the power of **Amazon Rekognition** and **OpenAI’s language model** to help you capture the essence of an image in song form. Simply upload an image, and Muse will analyze its contents, generating keywords that reflect the picture’s mood and themes. These keywords are then transformed into song lyrics that you can use as a foundation for your next hit!
