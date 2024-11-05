@@ -1,72 +1,114 @@
-# 🎶 Muse - AI-Powered Inspiration for Songwriters 🎶
+# 🎶 Muse - Generate Song Lyrics from Your Images 🎶
 
-Welcome to **Muse**, your personal AI-powered songwriting assistant! Muse transforms images into evocative song lyrics, helping you find inspiration from the world around you. Whether you’re a seasoned songwriter or a budding lyricist, Muse is a lightweight, easy-to-use tool that turns visual moments into lyrical magic.
+Muse is an AI-powered web application that transforms images into song lyrics. By using Amazon Rekognition to analyze images and OpenAI's language model to generate lyrics, Muse turns visual moments into lyrical inspiration. This tool is designed for songwriters, poets, and creatives who want to explore new ways of finding inspiration.
 
-## 🌟 What is Muse?
+## Table of Contents
 
-Muse is a web app that uses the power of **Amazon Rekognition** and **OpenAI’s language model** to help you capture the essence of an image in song form. Simply upload an image, and Muse will analyze its contents, generating keywords that reflect the picture’s mood and themes. These keywords are then transformed into song lyrics that you can use as a foundation for your next hit!
+1. [Features](#features)
+2. [How It Works](#how-it-works)
+3. [Installation](#installation)
+4. [Usage](#usage)
+5. [Customization Options](#customization-options)
+6. [API Documentation](#api-documentation)
+7. [Contributing](#contributing)
+8. [License](#license)
 
-### Why Muse?
+## Features
 
-Imagine taking a photo of a serene beach or a bustling cityscape and instantly getting lyrics that capture the mood, feel, and story behind that image. Muse is designed for:
+- **Image Recognition**: Upload an image, and Muse will analyze it using Amazon Rekognition to generate key words and phrases.
+- **AI-Powered Lyrics Generation**: Choose from different lyrical styles (e.g., Kenny Chesney, Adele, Luke Bryan) to generate unique song lyrics.
+- **User-Friendly Interface**: Simple, intuitive design that’s accessible from both desktop and mobile devices.
+- **Customization Options**: Select from multiple lyrical styles to tailor the generated lyrics to your desired vibe.
 
-- **Songwriters** looking for a spark of inspiration.
-- **Poets** and **creative writers** exploring new prompts.
-- **Artists** seeking fresh ideas to accompany their visuals.
-- Anyone who believes in the magic of turning pictures into words!
+## How It Works
 
-## 🎨 Key Features
+1. **Image Upload**: Users upload an image of their choice.
+2. **Image Analysis**: The image is sent to Amazon Rekognition, which returns keywords describing the image.
+3. **Lyrics Generation**: The keywords are used as a prompt for OpenAI's language model to generate lyrics in the chosen style.
+4. **Result Display**: Muse presents the generated song lyrics and keywords on the screen, allowing users to find inspiration instantly.
 
-- **Image Recognition**: Upload any image, and Muse will analyze it using Amazon Rekognition, identifying key elements, objects, and themes.
-- **Lyrics Generation**: Using OpenAI’s language model, Muse generates custom song lyrics based on the themes identified in your image.
-- **Genre and Style Flexibility**: In future releases, you’ll be able to choose a specific genre or lyrical style to better match your artistic direction.
-- **Simple and Lightweight**: Muse is designed to be straightforward, intuitive, and fast. Get lyrics in seconds without a complex setup.
+## Installation
 
-## 🚀 How to Use Muse
+### Prerequisites
 
-1. **Upload an Image**: Choose an image that you find inspiring, whether it’s a landscape, a candid moment, or a still life.
-2. **Generate Lyrics**: Click "Generate Lyrics" to let Muse analyze the image and create lyrics.
-3. **Use or Share**: Use the lyrics as a foundation for your song, or share them on social media to spark conversations about your creative process.
+- Node.js (v14 or higher)
+- AWS account for Rekognition and Lambda setup
+- OpenAI API Key
 
-## 🛠️ Tech Stack
+### Steps
 
-- **Frontend**: React.js - A modern, mobile-friendly UI for easy use.
-- **Backend**: AWS Lambda - Handles image analysis and communicates with AI services.
-- **AI Services**:
-  - **Amazon Rekognition** - Provides image analysis and keyword extraction.
-  - **OpenAI API** - Generates song lyrics based on the keywords from your image.
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/username/muse.git
+   ```
+2. **Navigate to the project directory**:
+   ```bash
+   cd muse
+   ```
+3. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+4. **Set up environment variables**:
+   - Create a `.env` file and add your API keys:
+     ```plaintext
+     REACT_APP_OPENAI_API_KEY=your_openai_api_key
+     REACT_APP_REKOGNITION_API_KEY=your_aws_rekognition_key
+     ```
+5. **Run the application**:
+   ```bash
+   npm start
+   ```
+   The application should be available at `http://localhost:3000`.
 
-## 🌐 Deployment
+## Usage
 
-Muse is hosted on **AWS Amplify** for seamless and scalable deployment. The app is cloud-native, designed to be accessible from any device with a browser.
+1. **Upload an Image**: Click the "Choose File" button and select an image from your device.
+2. **Select a Style**: Use the dropdown to choose a lyrical style (e.g., Kenny Chesney for beach vibes).
+3. **Generate Lyrics**: Click "Generate Lyrics" to process the image and create a song.
+4. **View the Result**: The generated lyrics will be displayed at the top, with keywords from the image shown at the bottom.
 
-## 📖 Example Use Cases
+## Customization Options
 
-- **Writers’ Block**: Stuck on a song? Use Muse to kickstart ideas with visuals.
-- **Mood-Based Lyrics**: Capture the feel of a specific moment—like a rainy day or a crowded concert—and see what lyrics come out.
-- **Content Creation**: Pair your visuals with lyrics to create richer, more engaging social media posts.
+Muse currently offers three distinct lyrical styles:
 
-## 📅 Roadmap
+- **Beach Vibes** (Kenny Chesney): Ideal for relaxed, beach-inspired lyrics.
+- **Emotional Ballad** (Adele): Perfect for deep, soulful lyrics that evoke strong emotions.
+- **Country Rock** (Luke Bryan): Great for high-energy, feel-good lyrics.
 
-Muse is just getting started! Here’s a sneak peek at what’s coming:
+Users can choose a style before generating the lyrics to tailor the output to their creative needs.
 
-- 🎸 **Genre and Style Options**: Choose your lyrical genre and style.
-- 📜 **History Feature**: Save generated lyrics for future reference.
-- 🎼 **Music Suggestions**: Integrate with audio libraries to recommend background music that fits the generated lyrics.
-- 📲 **Mobile App**: Build a mobile app for even easier access to inspiration on the go.
+## API Documentation
 
-## 👥 Contributing
+### Endpoint: `/museImageAnalyzer`
 
-Muse is an open-source project! Contributions are welcome to make Muse even better. If you have ideas, suggestions, or code improvements, feel free to submit a pull request.
+- **Method**: POST
+- **Description**: Analyzes an uploaded image and generates song lyrics based on selected style.
+- **Request Body**:
+  ```json
+  {
+    "image": "base64-encoded-image-data",
+    "prompt": "Custom prompt based on selected style"
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "description": "Generated keywords from Rekognition",
+    "lyrics": "Generated song lyrics from OpenAI"
+  }
+  ```
 
-## 📞 Contact
+## Contributing
 
-For questions, suggestions, or feedback, please contact:
+Muse is an open-source project, and contributions are welcome! If you’d like to contribute, please fork the repository and create a pull request. For major changes, please open an issue to discuss your ideas.
 
-- **Creator**: Josh Glessner
-- **Email**: On request
-- **GitHub**: [Muse GitHub Repository](https://github.com/JGlessner757/muse)
+1. **Fork the repository**
+2. **Create your feature branch** (`git checkout -b feature/your-feature-name`)
+3. **Commit your changes** (`git commit -m 'Add your message'`)
+4. **Push to the branch** (`git push origin feature/your-feature-name`)
+5. **Open a pull request**
 
-## 📝 License
+## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

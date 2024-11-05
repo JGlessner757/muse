@@ -5,6 +5,7 @@ const ImageUpload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [keywords, setKeywords] = useState(''); // Renamed description to keywords
   const [lyrics, setLyrics] = useState(''); // State to hold the generated lyrics
+  const [style, setStyle] = useState('Kenny Chesney'); // Default style selection
   const [loading, setLoading] = useState(false);
 
   const handleFileChange = (event) => {
@@ -22,9 +23,20 @@ const ImageUpload = () => {
       try {
         const base64Image = reader.result.split(',')[1]; // Extract only the base64 part
 
+        // Choose prompt based on selected style
+        let prompt = '';
+        if (style === 'Kenny Chesney') {
+          prompt = `Write a song in the style of Kenny Chesney, focusing on good vibes, sunny beaches, and the joy of living in the moment. Use the following keywords: ${keywords}`;
+        } else if (style === 'Adele') {
+          prompt = `Write a soulful, emotional ballad in the style of Adele. The song should explore love, longing, and self-reflection. Use the following keywords: ${keywords}`;
+        } else if (style === 'Luke Bryan') {
+          prompt = `Write a high-energy country rock song in the style of Luke Bryan. The song should be upbeat and focus on having a good time, freedom, and adventure. Use the following keywords: ${keywords}`;
+        }
+
         // Send to API Gateway
         const response = await axios.post('https://ghvgmdk314.execute-api.us-east-2.amazonaws.com/prod/museImageAnalyzer', {
-          image: base64Image
+          image: base64Image,
+          prompt: prompt // Pass the custom prompt to Lambda
         });
 
         // Display the results
@@ -43,7 +55,18 @@ const ImageUpload = () => {
       <h1>Muse - Generate Song Lyrics from Your Image</h1>
 
       <input type="file" onChange={handleFileChange} />
-      <button onClick={handleSubmit} disabled={!selectedFile || loading}>
+      
+      {/* Style Selection Dropdown */}
+      <div style={{ marginTop: '20px' }}>
+        <label htmlFor="style-select" style={{ marginRight: '10px' }}>Choose a Style:</label>
+        <select id="style-select" onChange={(e) => setStyle(e.target.value)} value={style}>
+          <option value="Kenny Chesney">Beach Vibes (Kenny Chesney)</option>
+          <option value="Adele">Emotional Ballad (Adele)</option>
+          <option value="Luke Bryan">Upbeat Country Rock (Luke Bryan)</option>
+        </select>
+      </div>
+
+      <button onClick={handleSubmit} disabled={!selectedFile || loading} style={{ marginTop: '20px' }}>
         {loading ? 'Generating...' : 'Generate Lyrics'}
       </button>
 
