@@ -78,9 +78,9 @@ const ImageUpload = () => {
       <div style={{ marginTop: '20px' }}>
         <label htmlFor="style-select" style={{ marginRight: '10px' }}>Choose a Style:</label>
         <select id="style-select" onChange={(e) => handleStyleChange(e.target.value)} value={style}>
-          <option value="Trop Rock">Trop Rock (100 BPM, Keys: C, G, F)</option>
-          <option value="Southern Blues">Southern Blues (85 BPM, Keys: E, A, D)</option>
-          <option value="Honky Tonk Hits">Honky Tonk Hits (95 BPM, Keys: G, D, E)</option>
+          <option value="Trop Rock">Trop Rock (100 BPM)</option>
+          <option value="Southern Blues">Southern Blues (85 BPM)</option>
+          <option value="Honky Tonk Hits">Honky Tonk Hits (95 BPM)</option>
         </select>
       </div>
 
