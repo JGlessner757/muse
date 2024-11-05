@@ -7,7 +7,7 @@ function ImageUpload() {
   const [loading, setLoading] = useState(false);
 
   // Replace this with your API Gateway endpoint URL
-  const apiUrl = "https://1jcwm2ee3g.execute-api.us-east-2.amazonaws.com/default/museImageAnalyzer";
+  const apiUrl = "https://ghvgmdk314.execute-api.us-east-2.amazonaws.com/prod";
 
   const handleImageChange = (event) => {
     setSelectedImage(event.target.files[0]);
