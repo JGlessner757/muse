@@ -11,7 +11,7 @@ const ImageUpload = () => {
   const [bpm, setBpm] = useState('100');
   const [loading, setLoading] = useState(false);
 
-  const MAX_FILE_SIZE_MB = 5;
+  const MAX_FILE_SIZE_MB = 8;
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
