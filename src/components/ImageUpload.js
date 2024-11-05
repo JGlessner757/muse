@@ -5,19 +5,28 @@ const ImageUpload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [keywords, setKeywords] = useState('');
   const [lyrics, setLyrics] = useState('');
-  const [style, setStyle] = useState('Trop Rock'); // Default style
-  const [key, setKey] = useState('C'); // Default key
-  const [bpm, setBpm] = useState('100'); // Default BPM for Trop Rock
+  const [style, setStyle] = useState('Trop Rock');
+  const [key, setKey] = useState('C');
+  const [bpm, setBpm] = useState('100');
   const [loading, setLoading] = useState(false);
 
+  const MAX_FILE_SIZE_MB = 5; // Maximum file size in MB (set this limit as appropriate for your app)
+
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+    const file = event.target.files[0];
+    const fileSizeMB = file.size / (1024 * 1024); // Convert bytes to MB
+
+    if (fileSizeMB > MAX_FILE_SIZE_MB) {
+      alert(`File size should not exceed ${MAX_FILE_SIZE_MB} MB. Please choose a smaller file.`);
+      setSelectedFile(null); // Reset the file if it’s too large
+    } else {
+      setSelectedFile(file); // Set the file if it’s within the limit
+    }
   };
 
   const handleStyleChange = (selectedStyle) => {
     setStyle(selectedStyle);
 
-    // Adjust default BPM and Key options based on style
     if (selectedStyle === 'Trop Rock') {
       setBpm('100');
       setKey('C');
@@ -34,14 +43,12 @@ const ImageUpload = () => {
     if (!selectedFile) return;
     setLoading(true);
 
-    // Convert the image to base64
     const reader = new FileReader();
     reader.readAsDataURL(selectedFile);
     reader.onloadend = async () => {
       try {
         const base64Image = reader.result.split(',')[1]; // Extract only the base64 part
 
-        // Generate the prompt based on style, key, and bpm
         let prompt = '';
         if (style === 'Trop Rock') {
           prompt = `Write a Trop Rock song with a relaxed, beachy vibe around ${bpm} BPM in the key of ${key}. Use the following keywords: ${keywords}`;
@@ -51,15 +58,13 @@ const ImageUpload = () => {
           prompt = `Write an upbeat Honky Tonk song around ${bpm} BPM in the key of ${key}. The lyrics should be fun and lively. Use the following keywords: ${keywords}`;
         }
 
-        // Send to API Gateway
         const response = await axios.post('https://ghvgmdk314.execute-api.us-east-2.amazonaws.com/prod/museImageAnalyzer', {
           image: base64Image,
-          prompt: prompt // Pass the custom prompt to Lambda
+          prompt: prompt
         });
 
-        // Display the results
-        setKeywords(response.data.description); // Set keywords from Rekognition
-        setLyrics(response.data.lyrics); // Set lyrics from OpenAI
+        setKeywords(response.data.description);
+        setLyrics(response.data.lyrics);
       } catch (error) {
         console.error('Error in API request:', error);
       } finally {
@@ -74,17 +79,15 @@ const ImageUpload = () => {
 
       <input type="file" onChange={handleFileChange} />
       
-      {/* Style Selection Dropdown */}
       <div style={{ marginTop: '20px' }}>
         <label htmlFor="style-select" style={{ marginRight: '10px' }}>Choose a Style:</label>
         <select id="style-select" onChange={(e) => handleStyleChange(e.target.value)} value={style}>
-          <option value="Trop Rock">Trop Rock (100 BPM)</option>
-          <option value="Southern Blues">Southern Blues (85 BPM)</option>
-          <option value="Honky Tonk Hits">Honky Tonk Hits (95 BPM)</option>
+          <option value="Trop Rock">Trop Rock </option>
+          <option value="Southern Blues">Southern Blues </option>
+          <option value="Honky Tonk Hits">Honky Tonk Hits </option>
         </select>
       </div>
 
-      {/* Key Selection Dropdown */}
       <div style={{ marginTop: '20px' }}>
         <label htmlFor="key-select" style={{ marginRight: '10px' }}>Choose a Key:</label>
         <select id="key-select" onChange={(e) => setKey(e.target.value)} value={key}>
@@ -116,7 +119,6 @@ const ImageUpload = () => {
         {loading ? 'Generating...' : 'Generate Lyrics'}
       </button>
 
-      {/* Displaying Lyrics at the Top */}
       {lyrics && (
         <div style={{ marginTop: '40px', padding: '20px', border: '1px solid #ddd', borderRadius: '8px', backgroundColor: '#f9f9f9', maxWidth: '600px', margin: 'auto' }}>
           <h2>Your Song Lyrics 🎶</h2>
@@ -125,7 +127,6 @@ const ImageUpload = () => {
         </div>
       )}
 
-      {/* Displaying Keywords at the Bottom */}
       {keywords && (
         <div style={{ marginTop: '40px', padding: '15px', border: '1px solid #ddd', borderRadius: '8px', backgroundColor: '#eef2f3', maxWidth: '600px', margin: 'auto' }}>
           <h2>Key Words 📝</h2>
