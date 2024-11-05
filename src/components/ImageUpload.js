@@ -85,9 +85,9 @@ const ImageUpload = () => {
       <div className="mb-3">
         <label htmlFor="style-select" className="form-label">Choose a Style:</label>
         <select className="form-select" id="style-select" onChange={(e) => handleStyleChange(e.target.value)} value={style}>
-          <option value="Trop Rock">Trop Rock (100 BPM, Keys: C, G, F)</option>
-          <option value="Southern Blues">Southern Blues (85 BPM, Keys: E, A, D)</option>
-          <option value="Honky Tonk Hits">Honky Tonk Hits (95 BPM, Keys: G, D, E)</option>
+          <option value="Trop Rock">🌴 Trop Rock 🌴</option>
+          <option value="Southern Blues">🥃 Southern Blues 🥃</option>
+          <option value="Honky Tonk Hits">👢 Honky Tonk Hits 👢</option>
         </select>
       </div>
 
