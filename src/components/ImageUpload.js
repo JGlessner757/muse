@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const ImageUpload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -10,17 +11,17 @@ const ImageUpload = () => {
   const [bpm, setBpm] = useState('100');
   const [loading, setLoading] = useState(false);
 
-  const MAX_FILE_SIZE_MB = 5; // Maximum file size in MB (set this limit as appropriate for your app)
+  const MAX_FILE_SIZE_MB = 5;
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    const fileSizeMB = file.size / (1024 * 1024); // Convert bytes to MB
+    const fileSizeMB = file.size / (1024 * 1024);
 
     if (fileSizeMB > MAX_FILE_SIZE_MB) {
       alert(`File size should not exceed ${MAX_FILE_SIZE_MB} MB. Please choose a smaller file.`);
-      setSelectedFile(null); // Reset the file if it’s too large
+      setSelectedFile(null);
     } else {
-      setSelectedFile(file); // Set the file if it’s within the limit
+      setSelectedFile(file);
     }
   };
 
@@ -47,7 +48,7 @@ const ImageUpload = () => {
     reader.readAsDataURL(selectedFile);
     reader.onloadend = async () => {
       try {
-        const base64Image = reader.result.split(',')[1]; // Extract only the base64 part
+        const base64Image = reader.result.split(',')[1];
 
         let prompt = '';
         if (style === 'Trop Rock') {
@@ -74,23 +75,25 @@ const ImageUpload = () => {
   };
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '20px' }}>
-      <h1>Muse - Generate Song Lyrics from Your Image</h1>
+    <div className="container mt-5 text-center">
+      <h1 className="mb-4">Muse - Generate Song Lyrics from Your Image</h1>
 
-      <input type="file" onChange={handleFileChange} />
+      <div className="mb-3">
+        <input type="file" className="form-control" onChange={handleFileChange} />
+      </div>
       
-      <div style={{ marginTop: '20px' }}>
-        <label htmlFor="style-select" style={{ marginRight: '10px' }}>Choose a Style:</label>
-        <select id="style-select" onChange={(e) => handleStyleChange(e.target.value)} value={style}>
-          <option value="Trop Rock">Trop Rock </option>
-          <option value="Southern Blues">Southern Blues </option>
-          <option value="Honky Tonk Hits">Honky Tonk Hits </option>
+      <div className="mb-3">
+        <label htmlFor="style-select" className="form-label">Choose a Style:</label>
+        <select className="form-select" id="style-select" onChange={(e) => handleStyleChange(e.target.value)} value={style}>
+          <option value="Trop Rock">Trop Rock (100 BPM, Keys: C, G, F)</option>
+          <option value="Southern Blues">Southern Blues (85 BPM, Keys: E, A, D)</option>
+          <option value="Honky Tonk Hits">Honky Tonk Hits (95 BPM, Keys: G, D, E)</option>
         </select>
       </div>
 
-      <div style={{ marginTop: '20px' }}>
-        <label htmlFor="key-select" style={{ marginRight: '10px' }}>Choose a Key:</label>
-        <select id="key-select" onChange={(e) => setKey(e.target.value)} value={key}>
+      <div className="mb-3">
+        <label htmlFor="key-select" className="form-label">Choose a Key:</label>
+        <select className="form-select" id="key-select" onChange={(e) => setKey(e.target.value)} value={key}>
           {style === 'Trop Rock' && (
             <>
               <option value="C">C</option>
@@ -115,22 +118,22 @@ const ImageUpload = () => {
         </select>
       </div>
 
-      <button onClick={handleSubmit} disabled={!selectedFile || loading} style={{ marginTop: '20px' }}>
+      <button onClick={handleSubmit} disabled={!selectedFile || loading} className="btn btn-primary">
         {loading ? 'Generating...' : 'Generate Lyrics'}
       </button>
 
       {lyrics && (
-        <div style={{ marginTop: '40px', padding: '20px', border: '1px solid #ddd', borderRadius: '8px', backgroundColor: '#f9f9f9', maxWidth: '600px', margin: 'auto' }}>
+        <div className="mt-5 p-4 border rounded bg-light">
           <h2>Your Song Lyrics 🎶</h2>
-          <p style={{ fontSize: '1.2em', fontStyle: 'italic', whiteSpace: 'pre-wrap' }}>{lyrics}</p>
-          <p style={{ marginTop: '10px', fontWeight: 'bold' }}>Key: {key}, BPM: {bpm}</p>
+          <p className="fw-bold text-primary">{lyrics}</p>
+          <p className="mt-2 text-secondary">Key: {key}, BPM: {bpm}</p>
         </div>
       )}
 
       {keywords && (
-        <div style={{ marginTop: '40px', padding: '15px', border: '1px solid #ddd', borderRadius: '8px', backgroundColor: '#eef2f3', maxWidth: '600px', margin: 'auto' }}>
+        <div className="mt-4 p-3 border rounded bg-light">
           <h2>Key Words 📝</h2>
-          <p style={{ fontSize: '1em', color: '#555' }}>{keywords}</p>
+          <p className="text-muted">{keywords}</p>
         </div>
       )}
     </div>
