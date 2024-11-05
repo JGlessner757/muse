@@ -65,7 +65,9 @@ const ImageUpload = () => {
         });
 
         setKeywords(response.data.description);
-        setLyrics(response.data.lyrics);
+        // Insert line breaks for readability
+        const formattedLyrics = response.data.lyrics.replace(/\\n/g, '\n');
+        setLyrics(formattedLyrics);
       } catch (error) {
         console.error('Error in API request:', error);
       } finally {
@@ -124,8 +126,8 @@ const ImageUpload = () => {
 
       {lyrics && (
         <div className="mt-5 p-4 border rounded bg-light">
-          <h2>Your Song Lyrics 🎶</h2>
-          <p className="fw-bold text-primary">{lyrics}</p>
+          <h2 className="text-dark">Your Song Lyrics 🎶</h2>
+          <pre style={{ fontSize: '1.2em', fontStyle: 'italic', whiteSpace: 'pre-wrap', color: '#333' }}>{lyrics}</pre>
           <p className="mt-2 text-secondary">Key: {key}, BPM: {bpm}</p>
         </div>
       )}
