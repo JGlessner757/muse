@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const ImageUpload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [description, setDescription] = useState('');
+  const [keywords, setKeywords] = useState(''); // Renamed description to keywords
   const [lyrics, setLyrics] = useState(''); // State to hold the generated lyrics
   const [loading, setLoading] = useState(false);
 
@@ -28,7 +28,7 @@ const ImageUpload = () => {
         });
 
         // Display the results
-        setDescription(response.data.description); // Set description (labels from Rekognition)
+        setKeywords(response.data.description); // Set keywords from Rekognition
         setLyrics(response.data.lyrics); // Set lyrics from OpenAI
       } catch (error) {
         console.error('Error in API request:', error);
@@ -47,19 +47,19 @@ const ImageUpload = () => {
         {loading ? 'Generating...' : 'Generate Lyrics'}
       </button>
 
-      {/* Displaying Description */}
-      {description && (
-        <div style={{ marginTop: '20px' }}>
-          <h2>Description:</h2>
-          <p>{description}</p>
-        </div>
-      )}
-
-      {/* Displaying Lyrics in a Cool Style */}
+      {/* Displaying Lyrics at the Top */}
       {lyrics && (
         <div style={{ marginTop: '40px', padding: '20px', border: '1px solid #ddd', borderRadius: '8px', backgroundColor: '#f9f9f9', maxWidth: '600px', margin: 'auto' }}>
           <h2>Your Song Lyrics 🎶</h2>
           <p style={{ fontSize: '1.2em', fontStyle: 'italic', whiteSpace: 'pre-wrap' }}>{lyrics}</p>
+        </div>
+      )}
+
+      {/* Displaying Keywords at the Bottom */}
+      {keywords && (
+        <div style={{ marginTop: '40px', padding: '15px', border: '1px solid #ddd', borderRadius: '8px', backgroundColor: '#eef2f3', maxWidth: '600px', margin: 'auto' }}>
+          <h2>Key Words 📝</h2>
+          <p style={{ fontSize: '1em', color: '#555' }}>{keywords}</p>
         </div>
       )}
     </div>
