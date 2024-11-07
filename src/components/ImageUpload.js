@@ -156,7 +156,7 @@ Each section should be labeled clearly, with the text "CHORUS," "VERSE 1," and "
 
       {lyrics && (
   <div className="lyrics-container mt-5 p-4 border rounded bg-light">
-    <h2>Your Song Lyrics 🎶</h2>
+    <h2>🎶Lyrics🎶</h2>
     <pre className="pre-wrap">{lyrics}</pre>
     <p className="mt-2 text-secondary">Key: {key}, BPM: {bpm}</p>
   </div>
