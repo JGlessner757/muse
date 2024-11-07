@@ -1,38 +1,61 @@
-.App {
-  text-align: center;
+/* App.css */
+
+
+/* Global font and colors */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  margin: 0;
+  padding: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Card-style container */
+.container {
+  max-width: 700px;
+  margin-top: 2rem;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Modern button style */
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 50px;
+  transition: background-color 0.2s;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.btn-primary:hover {
+  background-color: #0056b3;
 }
 
-.App-link {
-  color: #61dafb;
+/* Song lyrics styling */
+.lyrics-container {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #333;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.pre-wrap {
+  white-space: pre-wrap;
+}
+
+/* Keyword container */
+.keywords-container {
+  color: #555;
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+/* Header styles */
+h1, h2 {
+  color: #007bff;
 }

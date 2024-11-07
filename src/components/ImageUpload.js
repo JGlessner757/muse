@@ -102,20 +102,21 @@ Each section should be labeled clearly, with the text "CHORUS," "VERSE 1," and "
 
   return (
     <div className="container mt-5 text-center">
-      <h1 className="mb-4">Muse - Pix2Lyrics</h1>
+  <h1 className="mb-4">Muse - Pic2Lyric</h1>
 
-      <div className="mb-3">
-        <input type="file" className="form-control" onChange={handleFileChange} />
-      </div>
-      
-      <div className="mb-3">
-        <label htmlFor="style-select" className="form-label">Choose a Style:</label>
-        <select className="form-select" id="style-select" onChange={(e) => handleStyleChange(e.target.value)} value={style}>
-          <option value="Trop Rock">🌴 Trop Rock 🌴</option>
-          <option value="Southern Blues">🥃 Southern Blues 🥃</option>
-          <option value="Honky Tonk Hits">👢 Honky Tonk Hits 👢</option>
-        </select>
-      </div>
+  <div className="mb-4">
+    <input type="file" className="form-control" onChange={handleFileChange} />
+  </div>
+
+  <div className="mb-4">
+    <label htmlFor="style-select" className="form-label">Choose a Style:</label>
+    <select className="form-select" id="style-select" onChange={(e) => handleStyleChange(e.target.value)} value={style}>
+      <option value="Trop Rock">🌴 Trop Rock 🌴</option>
+      <option value="Southern Blues">🥃 Southern Blues 🥃</option>
+      <option value="Honky Tonk Hits">👢 Honky Tonk Hits 👢</option>
+    </select>
+  </div>
+
 
       <div className="mb-3">
         <label htmlFor="key-select" className="form-label">Choose a Key:</label>
@@ -154,12 +155,13 @@ Each section should be labeled clearly, with the text "CHORUS," "VERSE 1," and "
       </button>
 
       {lyrics && (
-  <div className="mt-5 p-4 border rounded bg-light">
-    <h2 className="text-dark">Your Song Lyrics 🎶</h2>
-    <pre style={{ fontSize: '1.2em', fontStyle: 'italic', whiteSpace: 'pre-wrap', color: '#333' }}>{lyrics}</pre>
+  <div className="lyrics-container mt-5 p-4 border rounded bg-light">
+    <h2>Your Song Lyrics 🎶</h2>
+    <pre className="pre-wrap">{lyrics}</pre>
     <p className="mt-2 text-secondary">Key: {key}, BPM: {bpm}</p>
   </div>
 )}
+
 
 
       {keywords && (
