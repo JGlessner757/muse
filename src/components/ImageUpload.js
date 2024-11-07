@@ -36,7 +36,7 @@ const ImageUpload = () => {
       setBpm('85');
       setKey('E');
     } else if (selectedStyle === 'Honky Tonk Hits') {
-      setBpm('95');
+      setBpm('120');
       setKey('G');
     }
   };
@@ -102,7 +102,7 @@ Each section should be labeled clearly, with the text "CHORUS," "VERSE 1," and "
 
   return (
     <div className="container mt-5 text-center">
-  <h1 className="mb-4">Muse - Pic2Lyric</h1>
+  <h1 className="mb-4">Muse</h1>
 
   <div className="mb-4">
     <input type="file" className="form-control" onChange={handleFileChange} />

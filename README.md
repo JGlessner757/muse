@@ -1,12 +1,12 @@
 # 🎶 Muse - Generate Song Lyrics from Your Images 🎶
 
-Muse is an AI-powered web application that transforms images into song lyrics. By using Amazon Rekognition to analyze images and OpenAI's language model to generate lyrics, Muse turns visual moments into lyrical inspiration. This tool is designed for songwriters, poets, and creatives who want to explore new ways of finding inspiration.
+Muse is an AI-powered web application that transforms images into song lyrics. By using Amazon Rekognition to analyze images and OpenAI's language model to generate lyrics, Muse use two different AI services to process an image and turn visual moments into lyrical inspiration. This tool is designed for songwriters, poets, and creatives who want to explore new ways of finding inspiration.
 
 ### [Access Current Version Here](https://master.d2el33hfyb2pay.amplifyapp.com/) ###
 
 ## Table of Contents
 
-1. [Features](#features)
+1. [Tech Stack Summary](#tech-stack-summary)
 2. [How It Works](#how-it-works)
 3. [Installation](#installation)
 4. [Usage](#usage)
@@ -15,13 +15,28 @@ Muse is an AI-powered web application that transforms images into song lyrics. B
 7. [Contributing](#contributing)
 8. [License](#license)
 
-## Features
+## Tech Stack Summary
 
-- **Image Recognition**: Upload an image, and Muse will analyze it using Amazon Rekognition to generate key words and phrases.
-- **AI-Powered Lyrics Generation**: Choose from different lyrical styles (e.g., Kenny Chesney, Adele, Luke Bryan) to generate unique song lyrics.
-- **User-Friendly Interface**: Simple, intuitive design that’s accessible from both desktop and mobile devices.
-- **Customization Options**: Select from multiple lyrical styles to tailor the generated lyrics to your desired vibe.
+### Frontend
+- **React** (JavaScript framework, Open source)
+- **Bootstrap** (CSS framework, Open source)
 
+### Backend
+- **Node.js** (JavaScript runtime, Open source)
+- **Express** (Web framework, Open source)
+
+### AI and Image Processing
+- **OpenAI API** (Lyrics generation, Paid API)
+- **AWS Rekognition** (Image analysis, AWS)
+
+### Hosting and Deployment
+- **AWS Amplify** (App hosting and deployment, AWS)
+
+### API Management
+- **AWS API Gateway** (API management, AWS)
+- **AWS Lambda** (Serverless backend functions, AWS)
+
+Each part of this stack is powerful, cost-effective, and scalable—making it the perfect toolkit for building a dynamic, high-quality app without overspending.
 ## How It Works
 
 1. **Image Upload**: Users upload an image of their choice.
@@ -74,9 +89,9 @@ Muse is an AI-powered web application that transforms images into song lyrics. B
 
 Muse currently offers three distinct lyrical styles:
 
-- **Beach Vibes** (Kenny Chesney): Ideal for relaxed, beach-inspired lyrics.
-- **Emotional Ballad** (Adele): Perfect for deep, soulful lyrics that evoke strong emotions.
-- **Country Rock** (Luke Bryan): Great for high-energy, feel-good lyrics.
+- **Trop Rock** (100 BPM, Can Choose Keys of C, F, G): Ideal for relaxed, beach-inspired vibes.
+- **Southern Blues** (85 BPM, Can Choose Keys of A, E, D): Perfect for deep, soulful sounds that evoke strong emotions.
+- **Honkey Tonk Hits** (120 BPM, Can Choose Keys of G, D, E): Great for high-energy, feel-good songs to groove to.
 
 Users can choose a style before generating the lyrics to tailor the output to their creative needs.
 
