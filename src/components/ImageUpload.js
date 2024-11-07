@@ -55,17 +55,13 @@ const ImageUpload = () => {
         const combinedKeywords = extraKeyword ? `${keywords}, ${extraKeyword}` : keywords;
   
         // Updated prompt with increased max_tokens
-        let prompt = `Create a song in the style of ${style} with lyrics prominently featuring the keyword "${extraKeyword}" and inspired by the keywords ${combinedKeywords}. The song should be written in the key of ${key} and follow this structure: Chorus, Verse 1, and Verse 2, in that order. Use a common 4-chord progression for the key, like I–V–vi–IV or I–vi–IV–V, to achieve a catchy and popular sound.
+        let prompt = `Create a song in the style of ${style} with lyrics prominently featuring the keyword "${extraKeyword}" and inspired by the keywords ${combinedKeywords}. The song should be written in the key of ${key} and follow this structure, in this exact order:
 
-Ensure the lyrics emphasize the extra keyword clearly. Place chord symbols within the lyrics to indicate where each chord change occurs, aligning with specific syllables for a natural rhythm. Make sure each section flows well with the BPM of ${bpm} and uses a natural rhythm that aligns with the specified BPM.
+1. CHORUS - Emphasize the main theme with memorable, catchy lines featuring the extra keyword.
+2. VERSE 1 - Introduce the theme, incorporating supporting keywords naturally.
+3. VERSE 2 - Expand on Verse 1, maintaining a similar rhythm and theme.
 
-Structure the output as follows:
-
-CHORUS - Emphasize the main theme with memorable lines featuring the extra keyword.
-Verse 1 - Introduce the theme with supporting keywords.
-Verse 2 - Build on Verse 1, maintaining rhythm and theme.
-
-Use clear section markers like "END CHORUS" or "END VERSE" after each part to ensure completeness.
+Each section should be labeled clearly, with the text "CHORUS," "VERSE 1," and "VERSE 2" at the start of each respective section. Use a common 4-chord progression suitable for the key, like I–V–vi–IV or I–vi–IV–V, and ensure the lyrics and chord changes fit smoothly with the BPM of ${bpm}.
 `;
         let response = await axios.post('https://ghvgmdk314.execute-api.us-east-2.amazonaws.com/prod/museImageAnalyzer', {
           image: base64Image,
@@ -158,12 +154,13 @@ Use clear section markers like "END CHORUS" or "END VERSE" after each part to en
       </button>
 
       {lyrics && (
-        <div className="mt-5 p-4 border rounded bg-light">
-          <h2 className="text-dark">Your Song Lyrics 🎶</h2>
-          <pre style={{ fontSize: '1.2em', fontStyle: 'italic', whiteSpace: 'pre-wrap', color: '#333' }}>{lyrics}</pre>
-          <p className="mt-2 text-secondary">Key: {key}, BPM: {bpm}</p>
-        </div>
-      )}
+  <div className="mt-5 p-4 border rounded bg-light">
+    <h2 className="text-dark">Your Song Lyrics 🎶</h2>
+    <pre style={{ fontSize: '1.2em', fontStyle: 'italic', whiteSpace: 'pre-wrap', color: '#333' }}>{lyrics}</pre>
+    <p className="mt-2 text-secondary">Key: {key}, BPM: {bpm}</p>
+  </div>
+)}
+
 
       {keywords && (
         <div className="mt-4 p-3 border rounded bg-light">
