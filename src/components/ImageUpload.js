@@ -9,6 +9,7 @@ const ImageUpload = () => {
   const [style, setStyle] = useState('Trop Rock');
   const [key, setKey] = useState('C');
   const [bpm, setBpm] = useState('100');
+  const [extraKeyword, setExtraKeyword] = useState(''); // New state for extra keyword
   const [loading, setLoading] = useState(false);
 
   const MAX_FILE_SIZE_MB = 8;
@@ -50,42 +51,17 @@ const ImageUpload = () => {
       try {
         const base64Image = reader.result.split(',')[1];
 
-        let prompt = '';
-        if (style === 'Trop Rock') {
-          //prompt = `Write a Trop Rock song with a relaxed, beachy vibe around ${bpm} BPM in the key of ${key}. Use the following keywords: ${keywords}`;
-          prompt = `Create a song in the style of ${style} with lyrics inspired by the keywords ${keywords}. The song should be written in the key of ${key} with a standard pop song structure: Verse 1, Chorus, Verse 2, Bridge, and repeated Chorus. Use a common 4-chord progression suitable for the key, like I–V–vi–IV or I–vi–IV–V, to create a catchy and popular sound.
+        // Add the extra keyword to the keywords list if it exists
+        const combinedKeywords = extraKeyword ? `${keywords}, ${extraKeyword}` : keywords;
 
-For each section, place chord symbols within the lyrics to indicate where each chord change occurs, aligning with specific syllables for a natural rhythm. Ensure that the lyrics and chord changes fit smoothly into the song’s rhythm, making it easy to play along. Structure the output as follows:
+        const prompt = `Create a song in the style of ${style} with lyrics inspired by the keywords ${combinedKeywords}. The song should be written in the key of ${key} and follow a standard pop song structure with a Chorus, Verse 1, and Verse 2. Use a common 4-chord progression suitable for the key, like I–V–vi–IV or I–vi–IV–V, to achieve a catchy and popular sound.
 
-Verse 1 - Include lines that introduce the theme, incorporating keywords naturally.
-Chorus - Make the lyrics catchy and emphasize the main message.
-Verse 2 - Build on Verse 1, keeping a similar rhythm.
-Bridge - Provide a lyrical shift or emotional peak.
-Repeat Chorus - Reinforce the theme in a memorable way.
-Include the BPM (beats per minute) of ${bpm} in the rhythm of the lyrics, so that the chord changes align naturally with the song's tempo.`;
-        } else if (style === 'Southern Blues') {
-          prompt = `Create a song in the style of ${style} with lyrics inspired by the keywords ${keywords}. The song should be written in the key of ${key} with a standard pop song structure: Verse 1, Chorus, Verse 2, Bridge, and repeated Chorus. Use a common 4-chord progression suitable for the key, like I–V–vi–IV or I–vi–IV–V, to create a catchy and popular sound.
+Place chord symbols within the lyrics to indicate where each chord change occurs, aligning with specific syllables for a natural rhythm. Ensure that the lyrics and chord changes fit smoothly with the BPM of ${bpm}, creating a coherent flow that’s easy to play along with. Structure the output as follows:
 
-For each section, place chord symbols within the lyrics to indicate where each chord change occurs, aligning with specific syllables for a natural rhythm. Ensure that the lyrics and chord changes fit smoothly into the song’s rhythm, making it easy to play along. Structure the output as follows:
-
-Verse 1 - Include lines that introduce the theme, incorporating keywords naturally.
-Chorus - Make the lyrics catchy and emphasize the main message.
-Verse 2 - Build on Verse 1, keeping a similar rhythm.
-Bridge - Provide a lyrical shift or emotional peak.
-Repeat Chorus - Reinforce the theme in a memorable way.
-Include the BPM (beats per minute) of ${bpm} in the rhythm of the lyrics, so that the chord changes align naturally with the song's tempo.`;
-        } else if (style === 'Honky Tonk Hits') {
-          prompt = `Create a song in the style of ${style} with lyrics inspired by the keywords ${keywords}. The song should be written in the key of ${key} with a standard pop song structure: Verse 1, Chorus, Verse 2, Bridge, and repeated Chorus. Use a common 4-chord progression suitable for the key, like I–V–vi–IV or I–vi–IV–V, to create a catchy and popular sound.
-
-For each section, place chord symbols within the lyrics to indicate where each chord change occurs, aligning with specific syllables for a natural rhythm. Ensure that the lyrics and chord changes fit smoothly into the song’s rhythm, making it easy to play along. Structure the output as follows:
-
-Verse 1 - Include lines that introduce the theme, incorporating keywords naturally.
-Chorus - Make the lyrics catchy and emphasize the main message.
-Verse 2 - Build on Verse 1, keeping a similar rhythm.
-Bridge - Provide a lyrical shift or emotional peak.
-Repeat Chorus - Reinforce the theme in a memorable way.
-Include the BPM (beats per minute) of ${bpm} in the rhythm of the lyrics, so that the chord changes align naturally with the song's tempo.`;
-        }
+Chorus - Emphasize the main theme with memorable, catchy lines.
+Verse 1 - Introduce the theme, incorporating keywords naturally.
+Verse 2 - Expand on Verse 1, maintaining a similar rhythm and theme.
+Display the chord progression clearly, and make sure each section has a natural rhythm that aligns with the specified BPM.`;
 
         const response = await axios.post('https://ghvgmdk314.execute-api.us-east-2.amazonaws.com/prod/museImageAnalyzer', {
           image: base64Image,
@@ -146,6 +122,11 @@ Include the BPM (beats per minute) of ${bpm} in the rhythm of the lyrics, so tha
             </>
           )}
         </select>
+      </div>
+
+      <div className="mb-3">
+        <label htmlFor="extra-keyword" className="form-label">Add an Extra Keyword (optional):</label>
+        <input type="text" className="form-control" id="extra-keyword" value={extraKeyword} onChange={(e) => setExtraKeyword(e.target.value)} />
       </div>
 
       <button onClick={handleSubmit} disabled={!selectedFile || loading} className="btn btn-primary">
