@@ -64,9 +64,27 @@ Bridge - Provide a lyrical shift or emotional peak.
 Repeat Chorus - Reinforce the theme in a memorable way.
 Include the BPM (beats per minute) of ${bpm} in the rhythm of the lyrics, so that the chord changes align naturally with the song's tempo.`;
         } else if (style === 'Southern Blues') {
-          prompt = `Write a soulful Southern Blues song around ${bpm} BPM in the key of ${key}. The lyrics should convey deep emotion and soul. Use the following keywords: ${keywords}`;
+          prompt = `Create a song in the style of ${style} with lyrics inspired by the keywords ${keywords}. The song should be written in the key of ${key} with a standard pop song structure: Verse 1, Chorus, Verse 2, Bridge, and repeated Chorus. Use a common 4-chord progression suitable for the key, like I–V–vi–IV or I–vi–IV–V, to create a catchy and popular sound.
+
+For each section, place chord symbols within the lyrics to indicate where each chord change occurs, aligning with specific syllables for a natural rhythm. Ensure that the lyrics and chord changes fit smoothly into the song’s rhythm, making it easy to play along. Structure the output as follows:
+
+Verse 1 - Include lines that introduce the theme, incorporating keywords naturally.
+Chorus - Make the lyrics catchy and emphasize the main message.
+Verse 2 - Build on Verse 1, keeping a similar rhythm.
+Bridge - Provide a lyrical shift or emotional peak.
+Repeat Chorus - Reinforce the theme in a memorable way.
+Include the BPM (beats per minute) of ${bpm} in the rhythm of the lyrics, so that the chord changes align naturally with the song's tempo.`;
         } else if (style === 'Honky Tonk Hits') {
-          prompt = `Write an upbeat Honky Tonk song around ${bpm} BPM in the key of ${key}. The lyrics should be fun and lively. Use the following keywords: ${keywords}`;
+          prompt = `Create a song in the style of ${style} with lyrics inspired by the keywords ${keywords}. The song should be written in the key of ${key} with a standard pop song structure: Verse 1, Chorus, Verse 2, Bridge, and repeated Chorus. Use a common 4-chord progression suitable for the key, like I–V–vi–IV or I–vi–IV–V, to create a catchy and popular sound.
+
+For each section, place chord symbols within the lyrics to indicate where each chord change occurs, aligning with specific syllables for a natural rhythm. Ensure that the lyrics and chord changes fit smoothly into the song’s rhythm, making it easy to play along. Structure the output as follows:
+
+Verse 1 - Include lines that introduce the theme, incorporating keywords naturally.
+Chorus - Make the lyrics catchy and emphasize the main message.
+Verse 2 - Build on Verse 1, keeping a similar rhythm.
+Bridge - Provide a lyrical shift or emotional peak.
+Repeat Chorus - Reinforce the theme in a memorable way.
+Include the BPM (beats per minute) of ${bpm} in the rhythm of the lyrics, so that the chord changes align naturally with the song's tempo.`;
         }
 
         const response = await axios.post('https://ghvgmdk314.execute-api.us-east-2.amazonaws.com/prod/museImageAnalyzer', {
