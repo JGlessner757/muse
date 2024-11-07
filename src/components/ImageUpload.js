@@ -93,7 +93,7 @@ Display only the top 5 keywords that are used in the song lyrics, showing each s
 
   return (
     <div className="container mt-5 text-center">
-      <h1 className="mb-4">Muse - Generate Song Lyrics from Your Image</h1>
+      <h1 className="mb-4">Muse - Pix2Lyrix</h1>
 
       <div className="mb-3">
         <input type="file" className="form-control" onChange={handleFileChange} />
@@ -136,7 +136,7 @@ Display only the top 5 keywords that are used in the song lyrics, showing each s
       </div>
 
       <div className="mb-3">
-        <label htmlFor="extra-keyword" className="form-label">Add an Extra Keyword (optional):</label>
+        <label htmlFor="extra-keyword" className="form-label">What's Happening Around You? (optional):</label>
         <input type="text" className="form-control" id="extra-keyword" value={extraKeyword} onChange={(e) => setExtraKeyword(e.target.value)} />
       </div>
 
