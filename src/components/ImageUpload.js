@@ -9,7 +9,7 @@ const ImageUpload = () => {
   const [style, setStyle] = useState('Trop Rock');
   const [key, setKey] = useState('C');
   const [bpm, setBpm] = useState('100');
-  const [extraKeyword, setExtraKeyword] = useState(''); // New state for extra keyword
+  const [extraKeyword, setExtraKeyword] = useState(''); // Extra keyword state
   const [loading, setLoading] = useState(false);
 
   const MAX_FILE_SIZE_MB = 8;
@@ -51,27 +51,38 @@ const ImageUpload = () => {
       try {
         const base64Image = reader.result.split(',')[1];
 
-        // Add the extra keyword to the keywords list if it exists
+        // Prepare keywords for prompt
         const combinedKeywords = extraKeyword ? `${keywords}, ${extraKeyword}` : keywords;
 
-        const prompt = `Create a song in the style of ${style} with lyrics inspired by the keywords ${combinedKeywords}. The song should be written in the key of ${key} and follow a standard pop song structure with a Chorus, Verse 1, and Verse 2. Use a common 4-chord progression suitable for the key, like I–V–vi–IV or I–vi–IV–V, to achieve a catchy and popular sound.
+        // Updated prompt
+        const prompt = `Create a song in the style of ${style} with lyrics prominently featuring the keyword "${extraKeyword}" and inspired by the keywords ${combinedKeywords}. The song should be written in the key of ${key} and follow this structure: Chorus, Verse 1, and Verse 2, in that order. Use a common 4-chord progression for the key, like I–V–vi–IV or I–vi–IV–V, to achieve a catchy and popular sound.
 
-Place chord symbols within the lyrics to indicate where each chord change occurs, aligning with specific syllables for a natural rhythm. Ensure that the lyrics and chord changes fit smoothly with the BPM of ${bpm}, creating a coherent flow that’s easy to play along with. Structure the output as follows:
+Ensure the lyrics emphasize the extra keyword clearly. Place chord symbols within the lyrics to indicate where each chord change occurs, aligning with specific syllables for a natural rhythm. Make sure each section flows well with the BPM of ${bpm} and uses a natural rhythm that aligns with the specified BPM.
 
-Chorus - Emphasize the main theme with memorable, catchy lines.
-Verse 1 - Introduce the theme, incorporating keywords naturally.
-Verse 2 - Expand on Verse 1, maintaining a similar rhythm and theme.
-Display the chord progression clearly, and make sure each section has a natural rhythm that aligns with the specified BPM.`;
+Structure the output as follows:
+
+CHORUS - Emphasize the main theme with memorable lines featuring the extra keyword.
+Verse 1 - Introduce the theme with supporting keywords.
+Verse 2 - Build on Verse 1, maintaining rhythm and theme.
+
+Display only the top 5 keywords that are used in the song lyrics, showing each section in the order given above.`
 
         const response = await axios.post('https://ghvgmdk314.execute-api.us-east-2.amazonaws.com/prod/museImageAnalyzer', {
           image: base64Image,
           prompt: prompt
         });
 
-        setKeywords(response.data.description);
-        // Insert line breaks for readability
-        const formattedLyrics = response.data.lyrics.replace(/\\n/g, '\n');
-        setLyrics(formattedLyrics);
+        // Process lyrics and keywords
+        setLyrics(response.data.lyrics.replace(/\\n/g, '\n'));
+
+        // Filter top 5 keywords used in the lyrics
+        const usedKeywords = response.data.description
+          .split(',')
+          .filter(keyword => response.data.lyrics.includes(keyword))
+          .slice(0, 5)
+          .join(', ');
+          
+        setKeywords(usedKeywords);
       } catch (error) {
         console.error('Error in API request:', error);
       } finally {
