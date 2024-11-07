@@ -102,7 +102,7 @@ Each section should be labeled clearly, with the text "CHORUS," "VERSE 1," and "
 
   return (
     <div className="container mt-5 text-center">
-      <h1 className="mb-4">Muse - Pix2Lyrix</h1>
+      <h1 className="mb-4">Muse - Pix2Lyrics</h1>
 
       <div className="mb-3">
         <input type="file" className="form-control" onChange={handleFileChange} />
