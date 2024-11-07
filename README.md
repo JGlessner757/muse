@@ -17,6 +17,10 @@ Muse is an AI-powered web application that transforms images into song lyrics. B
 
 ## Tech Stack Summary
 
+Run "src/components/MakeChart.py" to generate a visual.
+
+![Tech Stack Diagram](tech_stack.png)
+
 ### Frontend
 - **React** (JavaScript framework, Open source)
 - **Bootstrap** (CSS framework, Open source)
