@@ -162,8 +162,6 @@ Each section should be labeled clearly, with the text "CHORUS," "VERSE 1," and "
   </div>
 )}
 
-
-
       {keywords && (
         <div className="mt-4 p-3 border rounded bg-light">
           <h2>Key Words 📝</h2>
