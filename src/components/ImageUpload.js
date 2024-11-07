@@ -55,7 +55,7 @@ const ImageUpload = () => {
         const combinedKeywords = extraKeyword ? `${keywords}, ${extraKeyword}` : keywords;
   
         // Updated prompt with increased max_tokens
-        let prompt = `Create a song in the style of ${style} with lyrics prominently featuring the keyword "${extraKeyword}" and inspired by the keywords ${combinedKeywords}. The song should be written in the key of ${key} and follow this structure, in this exact order:
+        let prompt = `Create a song in the style of ${style} with lyrics prominently featuring the keyword "${extraKeyword}" and inspired by the keywords ${combinedKeywords}. Write the song as Bob Dylan would. The song should be written in the key of ${key} and follow this structure, in this exact order:
 
 1. CHORUS - Emphasize the main theme with memorable, catchy lines featuring the extra keyword.
 2. VERSE 1 - Introduce the theme, incorporating supporting keywords naturally.
