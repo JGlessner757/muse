@@ -12,7 +12,7 @@ const ImageUpload = () => {
   const [extraKeyword, setExtraKeyword] = useState(''); // Extra keyword state
   const [loading, setLoading] = useState(false);
 
-  const MAX_FILE_SIZE_MB = 8;
+  const MAX_FILE_SIZE_MB = 10;
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -44,18 +44,18 @@ const ImageUpload = () => {
   const handleSubmit = async () => {
     if (!selectedFile) return;
     setLoading(true);
-
+  
     const reader = new FileReader();
     reader.readAsDataURL(selectedFile);
     reader.onloadend = async () => {
       try {
         const base64Image = reader.result.split(',')[1];
-
+  
         // Prepare keywords for prompt
         const combinedKeywords = extraKeyword ? `${keywords}, ${extraKeyword}` : keywords;
-
-        // Updated prompt
-        const prompt = `Create a song in the style of ${style} with lyrics prominently featuring the keyword "${extraKeyword}" and inspired by the keywords ${combinedKeywords}. The song should be written in the key of ${key} and follow this structure: Chorus, Verse 1, and Verse 2, in that order. Use a common 4-chord progression for the key, like I–V–vi–IV or I–vi–IV–V, to achieve a catchy and popular sound.
+  
+        // Updated prompt with increased max_tokens
+        let prompt = `Create a song in the style of ${style} with lyrics prominently featuring the keyword "${extraKeyword}" and inspired by the keywords ${combinedKeywords}. The song should be written in the key of ${key} and follow this structure: Chorus, Verse 1, and Verse 2, in that order. Use a common 4-chord progression for the key, like I–V–vi–IV or I–vi–IV–V, to achieve a catchy and popular sound.
 
 Ensure the lyrics emphasize the extra keyword clearly. Place chord symbols within the lyrics to indicate where each chord change occurs, aligning with specific syllables for a natural rhythm. Make sure each section flows well with the BPM of ${bpm} and uses a natural rhythm that aligns with the specified BPM.
 
@@ -65,20 +65,32 @@ CHORUS - Emphasize the main theme with memorable lines featuring the extra keywo
 Verse 1 - Introduce the theme with supporting keywords.
 Verse 2 - Build on Verse 1, maintaining rhythm and theme.
 
-Display only the top 5 keywords that are used in the song lyrics, showing each section in the order given above.`
-
-        const response = await axios.post('https://ghvgmdk314.execute-api.us-east-2.amazonaws.com/prod/museImageAnalyzer', {
+Use clear section markers like "END CHORUS" or "END VERSE" after each part to ensure completeness.
+`;
+        let response = await axios.post('https://ghvgmdk314.execute-api.us-east-2.amazonaws.com/prod/museImageAnalyzer', {
           image: base64Image,
-          prompt: prompt
+          prompt: prompt,
+          max_tokens: 700 // Allows for a larger response
         });
-
-        // Process lyrics and keywords
-        setLyrics(response.data.lyrics.replace(/\\n/g, '\n'));
-
+  
+        let lyrics = response.data.lyrics.replace(/\\n/g, '\n');
+  
+        // Check if lyrics appear cut off (e.g., if they don't end with Verse 2)
+        if (!lyrics.includes("Verse 2") || lyrics.endsWith("...")) {
+          const continuationPrompt = "Please continue the song lyrics starting from where they left off.";
+          response = await axios.post('https://ghvgmdk314.execute-api.us-east-2.amazonaws.com/prod/museImageAnalyzer', {
+            prompt: continuationPrompt,
+            max_tokens: 300 // Adjust as needed for continuation
+          });
+          lyrics += "\n" + response.data.lyrics.replace(/\\n/g, '\n');
+        }
+  
+        setLyrics(lyrics);
+  
         // Filter top 5 keywords used in the lyrics
         const usedKeywords = response.data.description
           .split(',')
-          .filter(keyword => response.data.lyrics.includes(keyword))
+          .filter(keyword => lyrics.includes(keyword))
           .slice(0, 5)
           .join(', ');
           
@@ -90,6 +102,7 @@ Display only the top 5 keywords that are used in the song lyrics, showing each s
       }
     };
   };
+  
 
   return (
     <div className="container mt-5 text-center">
