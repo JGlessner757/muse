@@ -65,7 +65,7 @@ const ImageUpload = () => {
 
   return (
     <div className="container mt-5 text-center">
-      <h1 className="mb-4">🎵 MUSE 🎵</h1>
+      <h1 className="mb-4">🎵 PhotoMUSE 🎵</h1>
       <div className="mb-4">
         <input type="file" className="form-control" onChange={handleFileChange} />
       </div>
