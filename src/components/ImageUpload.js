@@ -5,22 +5,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const ImageUpload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [keywords, setKeywords] = useState('');
-  const [lyrics, setLyrics] = useState([]); // Store lyrics as an array of sections
-  const [currentIndex, setCurrentIndex] = useState(0); // Track the current verse/chorus
+  const [lyrics, setLyrics] = useState('');
   const [style, setStyle] = useState('Trop Rock');
   const [key, setKey] = useState('C');
   const [bpm, setBpm] = useState('100');
-  const [extraKeyword, setExtraKeyword] = useState(''); // Extra keyword state
   const [loading, setLoading] = useState(false);
-
   const MAX_FILE_SIZE_MB = 10;
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    const fileSizeMB = file.size / (1024 * 1024);
-
-    if (fileSizeMB > MAX_FILE_SIZE_MB) {
-      alert(`File size should not exceed ${MAX_FILE_SIZE_MB} MB. Please choose a smaller file.`);
+    if (file.size / (1024 * 1024) > MAX_FILE_SIZE_MB) {
+      alert(`File size exceeds ${MAX_FILE_SIZE_MB} MB. Please select a smaller file.`);
       setSelectedFile(null);
     } else {
       setSelectedFile(file);
@@ -29,7 +24,6 @@ const ImageUpload = () => {
 
   const handleStyleChange = (selectedStyle) => {
     setStyle(selectedStyle);
-
     if (selectedStyle === 'Trop Rock') {
       setBpm('100');
       setKey('C');
@@ -51,8 +45,6 @@ const ImageUpload = () => {
     reader.onloadend = async () => {
       try {
         const base64Image = reader.result.split(',')[1];
-
-        // Send the image to the backend Lambda
         const response = await axios.post('https://ghvgmdk314.execute-api.us-east-2.amazonaws.com/prod/museImageAnalyzer', {
           image: base64Image,
           style,
@@ -60,98 +52,46 @@ const ImageUpload = () => {
           key,
         });
 
-        // Split the lyrics into sections (verses and choruses)
-        const fullLyrics = response.data.lyrics.split('\n\n'); // Assumes sections are separated by double newlines
-        setLyrics(fullLyrics);
-        setKeywords(response.data.description);
-        setCurrentIndex(0); // Reset to the first section
+        setLyrics(response.data.lyrics || 'No lyrics generated.');
+        setKeywords(response.data.description || 'No keywords detected.');
       } catch (error) {
         console.error('Error in API request:', error);
+        alert('Failed to process the image and generate lyrics.');
       } finally {
         setLoading(false);
       }
     };
   };
 
-  const handleNext = () => {
-    if (lyrics.length > 0) {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % lyrics.length); // Loop back to the start
-    }
-  };
-
-  const handleRegenerate = () => {
-    // Clear the lyrics and regenerate with the same parameters
-    setLyrics([]);
-    handleSubmit();
-  };
-
   return (
     <div className="container mt-5 text-center">
       <h1 className="mb-4">🎵 MUSE 🎵</h1>
-
       <div className="mb-4">
         <input type="file" className="form-control" onChange={handleFileChange} />
       </div>
-
       <div className="mb-4">
         <label htmlFor="style-select" className="form-label">Choose a Style:</label>
         <select className="form-select" id="style-select" onChange={(e) => handleStyleChange(e.target.value)} value={style}>
-          <option value="Trop Rock">🌴 Trop Rock 🌴</option>
-          <option value="Southern Blues">🥃 Southern Blues 🥃</option>
-          <option value="Honky Tonk Hits">👢 Honky Tonk Hits 👢</option>
+          <option value="Trop Rock">🌴 Trop Rock</option>
+          <option value="Southern Blues">🎸 Southern Blues</option>
+          <option value="Honky Tonk Hits">👢 Honky Tonk Hits</option>
         </select>
       </div>
-
-      <div className="mb-3">
-        <label htmlFor="key-select" className="form-label">Choose a Key:</label>
-        <select className="form-select" id="key-select" onChange={(e) => setKey(e.target.value)} value={key}>
-          {style === 'Trop Rock' && (
-            <>
-              <option value="C">C</option>
-              <option value="G">G</option>
-              <option value="F">F</option>
-            </>
-          )}
-          {style === 'Southern Blues' && (
-            <>
-              <option value="E">E</option>
-              <option value="A">A</option>
-              <option value="D">D</option>
-            </>
-          )}
-          {style === 'Honky Tonk Hits' && (
-            <>
-              <option value="G">G</option>
-              <option value="D">D</option>
-              <option value="E">E</option>
-            </>
-          )}
-        </select>
-      </div>
-
       <button onClick={handleSubmit} disabled={!selectedFile || loading} className="btn btn-primary">
         {loading ? 'Generating...' : 'Generate Lyrics'}
       </button>
-
-      {/* Show lyrics and buttons to navigate */}
-      {lyrics.length > 0 && (
-        <div className="lyrics-container mt-5 p-4 border rounded bg-light">
-          <h2>🎶 Verse/Chorus 🎶</h2>
-          <p style={{ fontSize: '1.2em', fontStyle: 'italic', whiteSpace: 'pre-wrap', color: '#333' }}>
-            {lyrics[currentIndex]}
-          </p>
-          <div className="mt-3">
-            <button onClick={handleNext} className="btn btn-secondary me-2">Next Verse/Chorus</button>
-            <button onClick={handleRegenerate} className="btn btn-danger">Re-Generate Lyrics</button>
-          </div>
-          <p className="mt-2 text-secondary">Key: {key}, BPM: {bpm}</p>
+      {lyrics && (
+        <div className="mt-5">
+          <h2>🎶 Lyrics 🎶</h2>
+          <pre style={{ whiteSpace: 'pre-wrap', textAlign: 'left', padding: '1em', backgroundColor: '#f8f9fa', borderRadius: '5px' }}>
+            {lyrics}
+          </pre>
         </div>
       )}
-
       {keywords && (
-        <div className="mt-4 p-3 border rounded bg-light">
-          <h2>Key Words 📝</h2>
-          <p className="text-muted">{keywords}</p>
+        <div className="mt-4">
+          <h2>🔑 Key Words</h2>
+          <p>{keywords}</p>
         </div>
       )}
     </div>
