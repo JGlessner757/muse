@@ -4,23 +4,28 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const ImageUpload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [keywords, setKeywords] = useState('');
   const [lyrics, setLyrics] = useState('');
   const [style, setStyle] = useState('Trop Rock');
   const [key, setKey] = useState('C');
   const [bpm, setBpm] = useState('100');
+  const [extraKeyword, setExtraKeyword] = useState('');
   const [loading, setLoading] = useState(false);
   const MAX_FILE_SIZE_MB = 10;
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
+    const allowedFormats = ['image/jpeg', 'image/png'];
+    if (!allowedFormats.includes(file.type)) {
+      alert('Invalid file format. Please upload a JPG or PNG image.');
+      return;
+    }
     if (file.size / (1024 * 1024) > MAX_FILE_SIZE_MB) {
       alert(`File size exceeds ${MAX_FILE_SIZE_MB} MB. Please select a smaller file.`);
-      setSelectedFile(null);
-    } else {
-      setSelectedFile(file);
+      return;
     }
+    setSelectedFile(file);
   };
+  
 
   const handleStyleChange = (selectedStyle) => {
     setStyle(selectedStyle);
@@ -50,10 +55,10 @@ const ImageUpload = () => {
           style,
           bpm,
           key,
+          extraKeyword,
         });
 
         setLyrics(response.data.lyrics || 'No lyrics generated.');
-        setKeywords(response.data.description || 'No keywords detected.');
       } catch (error) {
         console.error('Error in API request:', error);
         alert('Failed to process the image and generate lyrics.');
@@ -65,33 +70,65 @@ const ImageUpload = () => {
 
   return (
     <div className="container mt-5 text-center">
-      <h1 className="mb-4">🎵 PhotoMUSE 🎵</h1>
+      <h1 className="mb-4">🎵 Your AI MUSE 🎵</h1>
+      <h5 className="mb-4">Turn your Photos Into Songs with AI</h5>
       <div className="mb-4">
+      <label htmlFor="style-select" className="form-label">📷 Share a Pic 📷</label>
         <input type="file" className="form-control" onChange={handleFileChange} />
       </div>
       <div className="mb-4">
-        <label htmlFor="style-select" className="form-label">Choose a Style:</label>
+        <label htmlFor="style-select" className="form-label">Choose a Musical Style 
+        </label>
         <select className="form-select" id="style-select" onChange={(e) => handleStyleChange(e.target.value)} value={style}>
-          <option value="Trop Rock">🌴 Trop Rock</option>
-          <option value="Southern Blues">🎸 Southern Blues</option>
-          <option value="Honky Tonk Hits">👢 Honky Tonk Hits</option>
+          <option value="Trop Rock">🌴 Trop Rock 🌴</option>
+          <option value="Southern Blues">🎸 Southern Blues 🎸</option>
+          <option value="Honky Tonk Hits">👢 Honky Tonk Hits 👢</option>
         </select>
       </div>
-      <button onClick={handleSubmit} disabled={!selectedFile || loading} className="btn btn-primary">
-        {loading ? 'Generating...' : 'Generate Lyrics'}
-      </button>
+      <div className="mb-4">
+        <label htmlFor="extra-keyword" className="form-label">Whats Special In This Pic?</label>
+        <input
+          type="text"
+          id="extra-keyword"
+          className="form-control"
+          placeholder="Optional, but helps inspiration"
+          value={extraKeyword}
+          onChange={(e) => setExtraKeyword(e.target.value)}
+        />
+      </div>
+      <button
+  onClick={handleSubmit}
+  disabled={!selectedFile || loading}
+  className="btn d-flex align-items-center justify-content-center mx-auto"
+  style={{
+    backgroundColor: '#4b2e83', // Purple shade matching the note emojis
+    borderColor: '#32006e', // Slightly darker shade for border
+    color: 'white', // White text for contrast
+    padding: '10px 20px',
+    borderRadius: '8px', // Rounded button edges
+    fontWeight: 'bold',
+  }}
+>
+  {loading ? (
+    <>
+      <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+      MUSE-ing...
+    </>
+  ) : (
+    'Generate Song Lyrics'
+  )}
+</button>
+
+
       {lyrics && (
         <div className="mt-5">
-          <h2>🎶 Lyrics 🎶</h2>
+          <h2>🎶 My Lyrics 🎶</h2>
+          
           <pre style={{ whiteSpace: 'pre-wrap', textAlign: 'left', padding: '1em', backgroundColor: '#f8f9fa', borderRadius: '5px' }}>
             {lyrics}
           </pre>
-        </div>
-      )}
-      {keywords && (
-        <div className="mt-4">
-          <h2>🔑 Key Words</h2>
-          <p>{keywords}</p>
+          <p>Play this song in the key of <strong> {key}</strong></p>
+          <p>Play a beat at <strong> {bpm} BPM</strong></p>
         </div>
       )}
     </div>
