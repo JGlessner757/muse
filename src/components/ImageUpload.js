@@ -68,10 +68,27 @@ const ImageUpload = () => {
     };
   };
 
+  // function for
+
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: "Check out this song I just generated with MUSE!",
+          text: `🎶 Here's my song lyrics:\n\n${lyrics}\n\n🎵 Play this song in the key of ${key} and at ${bpm} BPM. 🎵`,
+          url: "https://master.d2el33hfyb2pay.amplifyapp.com/", // Include your app's URL here
+        })
+        .then(() => console.log("Shared successfully!"))
+        .catch((error) => console.error("Error sharing:", error));
+    } else {
+      alert("Sharing is not supported on this device or browser.");
+    }
+  };
+  
   return (
     <div className="container mt-5 text-center">
-      <h1 className="mb-4">🎵 Your AI MUSE 🎵</h1>
-      <h5 className="mb-4">Turn your Photos Into Songs with AI</h5>
+      <h1 className="mb-4">🎵 SongSnap 🎵</h1>
+      <h5 className="mb-4">Pics to Songs with AI</h5>
       <div className="mb-4">
       <label htmlFor="style-select" className="form-label">📷 Share a Pic 📷</label>
         <input type="file" className="form-control" onChange={handleFileChange} />
@@ -121,12 +138,12 @@ const ImageUpload = () => {
 
 
       {lyrics && (
-        <div className="mt-5">
-          <h2>🎶 My Lyrics 🎶</h2>
-          
+        <div className="mt-5">          
+          <h2>🎶 My Lyrics 🎶</h2>          
           <pre style={{ whiteSpace: 'pre-wrap', textAlign: 'left', padding: '1em', backgroundColor: '#f8f9fa', borderRadius: '5px' }}>
             {lyrics}
           </pre>
+          
           <p>Play this song in the key of <strong> {key}</strong></p>
           <p>Play a beat at <strong> {bpm} BPM</strong></p>
         </div>

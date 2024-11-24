@@ -1,40 +1,40 @@
 /* App.css */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display:wght@700&display=swap');
 
-
 /* Global font and colors */
 body {
-  background-color: #34332F;
+  background-color: #34332F; /* Dark background */
   color: #FFFFFF; /* White text for contrast */
-  font-family: 'Roboto', sans-serif; /* Consider adding a clean font */
+  font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
 }
 
 a {
-  color: #5DE8D1;
+  color: #846F3F; /* Gold accent color for links */
   text-decoration: none;
 }
 
 a:hover {
-  color: #FFFFFF;
+  color: #9F8555; /* Lighter gold for hover effect */
   text-decoration: underline;
 }
 
 /* Card-style container */
 .container {
-  max-width: 700px;
-  margin-top: 2rem;
-  padding: 2rem;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 800px; /* Increase container width */
+  margin-top: 3rem; /* Adjust spacing from the top */
+  background-color: #1E1D1B; /* Background color to match theme */
+  border-radius: 12px; /* Softer corners for the container */
+  padding: 2.5rem; /* More padding for better spacing */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Stronger shadow effect */
 }
+
 
 /* Modern button style */
 .btn-primary {
-  background-color: #5DE8D1;
-  color: #34332F;
+  background-color: #846F3F; /* Gold button */
+  color: #FFFFFF;
   border: none;
   font-weight: bold;
   padding: 0.75rem 1.5rem;
@@ -42,42 +42,53 @@ a:hover {
 }
 
 .btn-primary:hover {
-  background-color: #0056b3;
-  box-shadow: 0px 6px 15px rgba(0, 86, 179, 0.4);
+  background-color: #9F8555; /* Lighter gold on hover */
+  box-shadow: 0px 6px 15px rgba(159, 133, 85, 0.4);
 }
 
 /* Song lyrics styling */
 .lyrics-container {
-  background-color: #f8f9fa;
-  padding: 1rem;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: #333;
+  background-color: #1E1D1B; /* Match container background */
+  color: #EDEDED; /* Light text for lyrics */
+  padding: 1.5rem; /* Comfortable padding */
+  border-radius: 8px; /* Rounded edges */
+  font-size: 1.2rem; /* Larger font size for readability */
+  line-height: 1.8; /* Increase line spacing */
+  margin-top: 2rem; /* Spacing above lyrics container */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for emphasis */
 }
+
 
 .pre-wrap {
   white-space: pre-wrap;
 }
 
-/* Keyword container */
-.keywords-container {
-  color: #555;
-  font-style: italic;
-  margin-top: 1rem;
+/* Fix for the title */
+h1 {
+  color: #846F3F !important ; /* Gold accent color */
+  font-family: 'Playfair Display', serif; /* Keeps branding style */
+  text-align: center; /* Centers the title */
 }
 
-/* Header styles */
-h1, h2, h3 {
-  color: #5DE8D1;
-  font-family: 'Playfair Display', serif;
+h2 {
+  color: #846F3F !important ; /* Gold accent color */
+  font-family: 'Playfair Display', serif; /* Keeps branding style */
+  text-align: center; /* Centers the title */
+}
+
+/* Fix for the subtitle */
+h5 {
+  color: #EDEDED !important; /* Light gray for readability */
+  font-family: 'Inter', sans-serif; /* Matches body font */
+  text-align: center; /* Centers the subtitle */
+  margin-bottom: 1rem; /* Adds spacing below subtitle */
 }
 
 /* Loading Spinner */
 .spinner {
   border: 4px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
-  border-top: 4px solid #fff;
+  border-top: 4px solid #846F3F; /* Gold spinner */
   width: 24px;
   height: 24px;
   animation: spin 1s linear infinite;
@@ -88,24 +99,91 @@ h1, h2, h3 {
   100% { transform: rotate(360deg); }
 }
 
-.card {
-  background-color: #3F3E3A; /* Slightly lighter than the background */
-  border-radius: 10px;
-  padding: 2rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
+/* Input fields and select dropdowns */
 input, select, textarea {
   background-color: #2C2B29;
-  border: 1px solid #5DE8D1;
+  border: 1px solid #846F3F; /* Gold border */
   color: #FFFFFF;
   padding: 0.75rem;
   border-radius: 0.5rem;
 }
 
 input:focus, select:focus, textarea:focus {
-  border-color: #5DE8D1;
-  box-shadow: 0 0 5px #5DE8D1;
+  border-color: #9F8555; /* Lighter gold for focus */
+  box-shadow: 0 0 5px #9F8555;
   outline: none;
+}
+
+/* Footer or additional section */
+footer {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #9F8555; /* Lighter gold for footer */
+}
+
+.form-label {
+  font-size: 1rem; /* Standard font size */
+  color: #FFFFFF; /* White text for labels */
+  margin-bottom: 0.5rem; /* Small spacing below labels */
+}
+
+.form-control {
+  background-color: #2C2B29; /* Dark input background */
+  border: 1px solid #846F3F; /* Gold border */
+  color: #FFFFFF; /* White text for inputs */
+  padding: 0.75rem;
+  border-radius: 0.5rem; /* Rounded edges */
+}
+
+.form-control:focus {
+  border-color: #9F8555; /* Light gold for focus */
+  box-shadow: 0 0 8px rgba(159, 133, 85, 0.5); /* Subtle glow */
+  outline: none;
+}
+
+.btn {
+  background-color: #4b2e83; /* Purple matching the note emojis */
+  border: 2px solid #32006e; /* Darker border for contrast */
+  color: white; /* White text */
+  font-weight: bold; /* Bold font */
+  padding: 12px 24px; /* Increase padding for a larger button */
+  border-radius: 8px; /* Rounded edges */
+  transition: all 0.3s ease-in-out; /* Smooth hover transition */
+}
+
+.btn:hover {
+  background-color: #5a37a3; /* Slightly lighter purple on hover */
+  box-shadow: 0 4px 12px rgba(74, 46, 130, 0.4); /* Shadow effect */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+.spinner-border {
+  border-color: rgba(255, 255, 255, 0.3); /* Semi-transparent spinner */
+  border-top-color: #846F3F; /* Gold spinner */
+  animation: spin 1s linear infinite;
+}
+
+.mb-4 {
+  margin-bottom: 2rem !important; /* Adjust margin-bottom spacing */
+}
+
+.mt-5 {
+  margin-top: 3rem !important; /* Adjust margin-top spacing */
+}
+
+/* Fix for the title */
+.title {
+  color: #846F3F; /* Gold accent color */
+  font-family: 'Playfair Display', serif; /* Keeps branding style */
+  text-align: center; /* Centers the title */
+}
+
+/* Fix for the subtitle */
+.subtitle {
+  color: #EDEDED; /* Light gray for readability */
+  font-family: 'Inter', sans-serif; /* Matches body font */
+  text-align: center; /* Centers the subtitle */
+  margin-bottom: 1rem; /* Adds spacing below subtitle */
 }
 
