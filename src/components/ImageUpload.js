@@ -87,7 +87,11 @@ const ImageUpload = () => {
   
   return (
     <div className="container mt-5 text-center">
-      <h1 className="mb-4">🎵 SongSnap 🎵</h1>
+      <img
+    src="full_logo_black.png"
+    alt="SongSnap Logo"
+    style={{ width: "200px", marginBottom: "20px" }}
+  />
       <h5 className="mb-4">Pics to Songs with AI</h5>
       <div className="mb-4">
       <label htmlFor="style-select" className="form-label">📷 Share a Pic 📷</label>
