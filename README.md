@@ -1,6 +1,8 @@
-# 🎶 Muse - Generate Song Lyrics from Your Images 🎶
+# 🎶 SongSnap - Generate Song Lyrics from Your Images 🎶
 
-Muse is an AI-powered web application that transforms images into song lyrics. By using Amazon Rekognition to analyze images and OpenAI's language model to generate lyrics, Muse use two different AI services to process an image and turn visual moments into lyrical inspiration. This tool is designed for songwriters, poets, and creatives who want to explore new ways of finding inspiration.
+![SongSnap](logo1.png)
+
+SongSnap is an AI-powered web application that transforms images into song lyrics. By using Amazon Rekognition to analyze images and OpenAI's language model to generate lyrics, SongSnap use two different AI services to process an image and turn visual moments into lyrical inspiration. This tool is designed for songwriters, poets, and creatives who want to explore new ways of finding inspiration.
 
 ### [Access Current Version Here](https://master.d2el33hfyb2pay.amplifyapp.com/) ###
 
@@ -46,7 +48,7 @@ Each part of this stack is powerful, cost-effective, and scalable—making it th
 1. **Image Upload**: Users upload an image of their choice.
 2. **Image Analysis**: The image is sent to Amazon Rekognition, which returns keywords describing the image.
 3. **Lyrics Generation**: The keywords are used as a prompt for OpenAI's language model to generate lyrics in the chosen style.
-4. **Result Display**: Muse presents the generated song lyrics and keywords on the screen, allowing users to find inspiration instantly.
+4. **Result Display**: SongSnap presents the generated song lyrics and keywords on the screen, allowing users to find inspiration instantly.
 
 ## Installation
 
@@ -91,44 +93,13 @@ Each part of this stack is powerful, cost-effective, and scalable—making it th
 
 ## Customization Options
 
-Muse currently offers three distinct lyrical styles:
+SongSnap currently offers three distinct lyrical styles:
 
 - **Trop Rock** (100 BPM, Can Choose Keys of C, F, G): Ideal for relaxed, beach-inspired vibes.
 - **Southern Blues** (85 BPM, Can Choose Keys of A, E, D): Perfect for deep, soulful sounds that evoke strong emotions.
 - **Honkey Tonk Hits** (120 BPM, Can Choose Keys of G, D, E): Great for high-energy, feel-good songs to groove to.
 
 Users can choose a style before generating the lyrics to tailor the output to their creative needs.
-
-## API Documentation
-
-### Endpoint: `/museImageAnalyzer`
-
-- **Method**: POST
-- **Description**: Analyzes an uploaded image and generates song lyrics based on selected style.
-- **Request Body**:
-  ```json
-  {
-    "image": "base64-encoded-image-data",
-    "prompt": "Custom prompt based on selected style"
-  }
-  ```
-- **Response**:
-  ```json
-  {
-    "description": "Generated keywords from Rekognition",
-    "lyrics": "Generated song lyrics from OpenAI"
-  }
-  ```
-
-## Contributing
-
-Muse is an open-source project, and contributions are welcome! If you’d like to contribute, please fork the repository and create a pull request. For major changes, please open an issue to discuss your ideas.
-
-1. **Fork the repository**
-2. **Create your feature branch** (`git checkout -b feature/your-feature-name`)
-3. **Commit your changes** (`git commit -m 'Add your message'`)
-4. **Push to the branch** (`git push origin feature/your-feature-name`)
-5. **Open a pull request**
 
 ## License
 
