@@ -1,6 +1,6 @@
-# 🎶 SongSnap - Generate Song Lyrics from Your Images 🎶
-
 ![SongSnap](logo1.png)
+
+# 🎶 Generate Song Lyrics from Your Images 🎶
 
 SongSnap is an AI-powered web application that transforms images into song lyrics. By using Amazon Rekognition to analyze images and OpenAI's language model to generate lyrics, SongSnap use two different AI services to process an image and turn visual moments into lyrical inspiration. This tool is designed for songwriters, poets, and creatives who want to explore new ways of finding inspiration.
 
