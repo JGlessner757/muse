@@ -1,0 +1,89 @@
+/* General Styles */
+body {
+    font-family: "Numans", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    color: #34332F;
+  }
+  
+  .container {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  /* Logo */
+  .logo {
+    max-width: 300px;
+    height: auto;
+    margin: 20px 0;
+  }
+  
+  /* Content */
+  .content h1 {
+    font-size: 2.5rem;
+    color: #85754d;
+    font-family:"Numans", sans-serif;
+  }
+  
+  .content p {
+    font-size: 1.2rem;
+    margin: 10px auto 20px;
+    max-width: 600px;
+  }
+  
+  /* Buttons */
+  .buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  .button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .learn-more {
+    background-color: #85754d; /* Turquoise (Primary Accent Color) */
+    color: #d4d3cf; /* Dark Text */
+  }
+  
+  .learn-more:hover {
+    transform: scale(1.1);
+  }
+  
+  .sign-up {
+    background-color: #5e4671; /* Purple */
+    color: white;
+  }
+  
+  .sign-up:hover {
+    transform: scale(1.1);
+  }
+  
+  /* Learn More Section */
+  .learn-more-section {
+    padding: 50px 20px;
+    background-color: #F8F8F8;
+    text-align: center;
+  }
+  
+  .learn-more-section h2 {
+    font-size: 2rem;
+    color: #34332F;
+  }
+  
+  .learn-more-section p {
+    font-size: 1.1rem;
+    max-width: 700px;
+    margin: auto;
+    line-height: 1.6;
+    color: #34332F;
+  }
+  

@@ -3,29 +3,16 @@ import axios from 'axios';
 
 const rekognition = new AWS.Rekognition();
 
-// List of stale words to filter out from Rekognition
-const staleWords = ['male', 'female', 'person', 'accessories', 'clothing'];
-
-function filterAndEnhanceLabels(labels) {
-  return labels
-    .filter((label) => !staleWords.includes(label.toLowerCase())) // Remove stale words
-    .map((label) => {
-      // Enhance specific words
-      if (label.toLowerCase() === 'sand') return 'soft sand';
-      //if (label.toLowerCase() === 'beach') return 'sun-kissed beach';
-      //if (label.toLowerCase() === 'sky') return 'vast blue sky';
-      return label; // Keep other labels as they are
-    });
-}
+// Define a list of "boring" words to filter out
+const boringWords = ['male', 'female', 'person', 'accessories', 'object', 'human', 'people'];
 
 export const handler = async (event) => {
   try {
+    // Parse the event body
     const body = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
-    const image = body.image;
-    const style = body.style || 'Trop Rock';
-    const bpm = body.bpm || '100';
-    const key = body.key || 'C';
+    const { image, style, bpm, key, extraKeyword } = body;
 
+    // Step 1: Process the image with Rekognition
     const params = {
       Image: {
         Bytes: Buffer.from(image, 'base64'),
@@ -34,18 +21,23 @@ export const handler = async (event) => {
 
     const rekognitionData = await rekognition.detectLabels(params).promise();
     let labels = rekognitionData.Labels.map((label) => label.Name);
-    labels = filterAndEnhanceLabels(labels);
+
+    // Filter out boring words
+    labels = labels.filter((label) => !boringWords.includes(label.toLowerCase()));
+
     const labelsString = labels.join(', ');
 
+    // Construct the OpenAI prompt
     let prompt = '';
     if (style === 'Trop Rock') {
-      prompt = `Write a Trop Rock song with a relaxed vibe around ${bpm} BPM in the key of ${key} with lyrics prominently featuring the keyword ${extraKeyword}. Use the following vivid words creatively: ${labelsString}. The song should have 3 verses and 2 choruses. Write the song as Jimmy Buffett would. Use a common 3 or 4-chord progression suitable for the key, like I–V–vi–IV or I–vi–IV–V, and ensure the lyrics and chord changes fit smoothly with the BPM of ${bpm}. In the ouptut, label where each chord change should take place`;
+      prompt = `Write a Trop Rock song with a relaxed vibe around ${bpm} BPM in the key of ${key} with lyrics prominently featuring the keyword "${extraKeyword}". Use the following vivid words creatively: ${labelsString}. The song should onlyhave 2 verses and a chorus. Write the song as Jimmy Buffett would. Use a common 3 or 4-chord progression suitable for the key, like I–V–vi–IV or I–vi–IV–V, and ensure the lyrics and chord changes fit smoothly with the BPM of ${bpm}. In the output, label where each chord change should take place.`;
     } else if (style === 'Southern Blues') {
-      prompt = `Write a Southern Blues song with a soulful vibe around ${bpm} BPM in the key of ${key} with lyrics prominently featuring the keyword ${extraKeyword}. Use the following vivid words creatively: ${labelsString}. The song should have 3 verses and 2 choruses. Write the song as Chris Stapleton would. Use a common 3 or 4-chord progression suitable for the key, like I–V–vi–IV or I–vi–IV–V, and ensure the lyrics and chord changes fit smoothly with the BPM of ${bpm}. In the ouptut, label where each chord change should take place`;
+      prompt = `Write a Southern Blues song with a soulful vibe around ${bpm} BPM in the key of ${key} with lyrics prominently featuring the keyword "${extraKeyword}". Use the following vivid words creatively: ${labelsString}. The song should only have 2 verses and a chorus. Write the song as Chris Stapleton would. Use a common 3 or 4-chord progression suitable for the key, like I–V–vi–IV or I–vi–IV–V, and ensure the lyrics and chord changes fit smoothly with the BPM of ${bpm}. In the output, label where each chord change should take place.`;
     } else if (style === 'Honky Tonk Hits') {
-      prompt = `Write a song with an upbeat-bootstomping vibe around ${bpm} BPM in the key of ${key} with lyrics prominently featuring the keyword ${extraKeyword}. Use the following vivid words creatively: ${labelsString}. The song should have 3 verses and 2 choruses. Write the song as Toby Keith would. Use a common 3 or 4-chord progression suitable for the key, like I–V–vi–IV or I–vi–IV–V, and ensure the lyrics and chord changes fit smoothly with the BPM of ${bpm}. In the ouptut, label where each chord change should take place`;
+      prompt = `Write a song with an upbeat-bootstomping vibe around ${bpm} BPM in the key of ${key} with lyrics prominently featuring the keyword "${extraKeyword}". Use the following vivid words creatively: ${labelsString}. The song should only have 2 verses and a chorus. Write the song as Toby Keith would. Use a common 3 or 4-chord progression suitable for the key, like I–V–vi–IV or I–vi–IV–V, and ensure the lyrics and chord changes fit smoothly with the BPM of ${bpm}. In the output, label where each chord change should take place.`;
     }
 
+    // Step 2: Call OpenAI API
     const openaiApiKey = process.env.OPENAI_API_KEY;
     const openaiResponse = await axios.post(
       'https://api.openai.com/v1/chat/completions',
@@ -57,7 +49,7 @@ export const handler = async (event) => {
             content: prompt,
           },
         ],
-        max_tokens: 500, // Increased token limit to handle longer lyrics
+        max_tokens: 500,
         temperature: 0.7,
       },
       {
@@ -68,12 +60,18 @@ export const handler = async (event) => {
       }
     );
 
+    // Extract the lyrics from the OpenAI response
     const lyrics = openaiResponse.data.choices[0].message.content.trim();
     console.log('Generated Lyrics:', lyrics);
 
+    // Return the lyrics, key, and BPM
     return {
       statusCode: 200,
-      body: JSON.stringify({ description: labelsString, lyrics }),
+      body: JSON.stringify({
+        lyrics: lyrics,
+        key: key,
+        bpm: bpm,
+      }),
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
@@ -82,10 +80,13 @@ export const handler = async (event) => {
       },
     };
   } catch (error) {
-    console.error('Error processing image with Rekognition or OpenAI:', error);
+    console.error('Error processing image with Rekognition or OpenAI:', error.message || error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Failed to process image and generate lyrics' }),
+      body: JSON.stringify({
+        error: 'Failed to process image and generate lyrics',
+        details: error.message || error,
+      }),
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',

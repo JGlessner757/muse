@@ -9,7 +9,7 @@ SongSnap is an AI-powered web application that transforms images into song lyric
 ## Table of Contents
 
 1. [Tech Stack Summary](#tech-stack-summary)
-2. [How It Works](#how-it-works)
+2. [Safety Features](#safety-features)
 3. [Installation](#installation)
 4. [Usage](#usage)
 5. [Customization Options](#customization-options)
@@ -43,12 +43,11 @@ Run "src/components/MakeChart.py" to generate a visual.
 - **AWS Lambda** (Serverless backend functions, AWS)
 
 Each part of this stack is powerful, cost-effective, and scalable—making it the perfect toolkit for building a dynamic, high-quality app without overspending.
-## How It Works
 
-1. **Image Upload**: Users upload an image of their choice.
-2. **Image Analysis**: The image is sent to Amazon Rekognition, which returns keywords describing the image.
-3. **Lyrics Generation**: The keywords are used as a prompt for OpenAI's language model to generate lyrics in the chosen style.
-4. **Result Display**: SongSnap presents the generated song lyrics and keywords on the screen, allowing users to find inspiration instantly.
+### Safety Features
+- **Hate Speech Filtering**: Images containing hate symbols or speech are flagged and blocked using AWS Rekognition.
+- **NSFW Detection**: Any explicit or inappropriate content is identified and prevented from processing, ensuring a safe environment for all users.
+
 
 ## Installation
 

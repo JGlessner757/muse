@@ -25,7 +25,6 @@ const ImageUpload = () => {
     }
     setSelectedFile(file);
   };
-  
 
   const handleStyleChange = (selectedStyle) => {
     setStyle(selectedStyle);
@@ -44,37 +43,44 @@ const ImageUpload = () => {
   const handleSubmit = async () => {
     if (!selectedFile) return;
     setLoading(true);
-
+  
     const reader = new FileReader();
     reader.readAsDataURL(selectedFile);
     reader.onloadend = async () => {
       try {
         const base64Image = reader.result.split(',')[1];
-        const response = await axios.post('https://ghvgmdk314.execute-api.us-east-2.amazonaws.com/prod/museImageAnalyzer', {
-          image: base64Image,
-          style,
-          bpm,
-          key,
-          extraKeyword,
-        });
-
+        const response = await axios.post(
+          'https://ghvgmdk314.execute-api.us-east-2.amazonaws.com/prod/museImageAnalyzer',
+          {
+            image: base64Image,
+            style,
+            bpm,
+            key,
+            extraKeyword,
+          }
+        );
+  
         setLyrics(response.data.lyrics || 'No lyrics generated.');
       } catch (error) {
         console.error('Error in API request:', error);
-        alert('Failed to process the image and generate lyrics.');
+        if (error.response && error.response.status === 400) {
+          // Handle flagged content with simplified error message
+          alert('NSFW content detected. Please upload a different image.');
+        } else {
+          alert('Something went wrong. Please try again later.');
+        }
       } finally {
         setLoading(false);
       }
     };
   };
-
-  // function for
+  
 
   const handleShare = () => {
     if (navigator.share) {
       navigator
         .share({
-          title: "Check out this song I just generated with MUSE!",
+          title: "Check out this song I just generated with SongSnap!",
           text: `🎶 Here's my song lyrics:\n\n${lyrics}\n\n🎵 Play this song in the key of ${key} and at ${bpm} BPM. 🎵`,
           url: "https://master.d2el33hfyb2pay.amplifyapp.com/", // Include your app's URL here
         })
@@ -84,30 +90,40 @@ const ImageUpload = () => {
       alert("Sharing is not supported on this device or browser.");
     }
   };
-  
+
   return (
     <div className="container mt-5 text-center">
       <img
-    src="full_logo_black.png"
-    alt="SongSnap Logo"
-    style={{ width: "200px", marginBottom: "20px" }}
-  />
+        src="full_logo_black.png"
+        alt="SongSnap Logo"
+        style={{ width: "200px", marginBottom: "20px" }}
+      />
       <h5 className="mb-4">Pics to Songs with AI</h5>
       <div className="mb-4">
-      <label htmlFor="style-select" className="form-label">📷 Share a Pic 📷</label>
+        <label htmlFor="style-select" className="form-label">
+          📷 Share a Pic 📷
+        </label>
         <input type="file" className="form-control" onChange={handleFileChange} />
       </div>
       <div className="mb-4">
-        <label htmlFor="style-select" className="form-label">Choose a Musical Style 
+        <label htmlFor="style-select" className="form-label">
+          Choose a Musical Style
         </label>
-        <select className="form-select" id="style-select" onChange={(e) => handleStyleChange(e.target.value)} value={style}>
+        <select
+          className="form-select"
+          id="style-select"
+          onChange={(e) => handleStyleChange(e.target.value)}
+          value={style}
+        >
           <option value="Trop Rock">🌴 Trop Rock 🌴</option>
           <option value="Southern Blues">🎸 Southern Blues 🎸</option>
           <option value="Honky Tonk Hits">👢 Honky Tonk Hits 👢</option>
         </select>
       </div>
       <div className="mb-4">
-        <label htmlFor="extra-keyword" className="form-label">Whats Special In This Pic?</label>
+        <label htmlFor="extra-keyword" className="form-label">
+          Whats Special In This Pic?
+        </label>
         <input
           type="text"
           id="extra-keyword"
@@ -118,38 +134,49 @@ const ImageUpload = () => {
         />
       </div>
       <button
-  onClick={handleSubmit}
-  disabled={!selectedFile || loading}
-  className="btn d-flex align-items-center justify-content-center mx-auto"
-  style={{
-    backgroundColor: '#4b2e83', // Purple shade matching the note emojis
-    borderColor: '#32006e', // Slightly darker shade for border
-    color: 'white', // White text for contrast
-    padding: '10px 20px',
-    borderRadius: '8px', // Rounded button edges
-    fontWeight: 'bold',
-  }}
->
-  {loading ? (
-    <>
-      <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-      MUSE-ing...
-    </>
-  ) : (
-    'Generate Song Lyrics'
-  )}
-</button>
-
+        onClick={handleSubmit}
+        disabled={!selectedFile || loading}
+        className="btn d-flex align-items-center justify-content-center mx-auto"
+        style={{
+          backgroundColor: '#4b2e83', // Purple shade matching the note emojis
+          borderColor: '#32006e', // Slightly darker shade for border
+          color: 'white', // White text for contrast
+          padding: '10px 20px',
+          borderRadius: '8px', // Rounded button edges
+          fontWeight: 'bold',
+        }}
+      >
+        {loading ? (
+          <>
+            <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            MUSE-ing...
+          </>
+        ) : (
+          'Generate Song Lyrics'
+        )}
+      </button>
 
       {lyrics && (
-        <div className="mt-5">          
-          <h2>🎶 My Lyrics 🎶</h2>          
-          <pre style={{ whiteSpace: 'pre-wrap', textAlign: 'left', padding: '1em', backgroundColor: '#f8f9fa', borderRadius: '5px' }}>
+        <div className="mt-5">
+          <h2>🎶 My Lyrics 🎶</h2>
+          <pre
+            style={{
+              whiteSpace: 'pre-wrap',
+              textAlign: 'left',
+              padding: '1em',
+              backgroundColor: '#f8f9fa',
+              borderRadius: '5px',
+            }}
+          >
             {lyrics}
           </pre>
-          
-          <p>Play this song in the key of <strong> {key}</strong></p>
-          <p>Play a beat at <strong> {bpm} BPM</strong></p>
+
+          <p>
+            Play this song in the key of <strong> {key}</strong>
+          </p>
+          <p>
+            Play a beat at <strong> {bpm} BPM</strong>
+          </p>
         </div>
       )}
     </div>

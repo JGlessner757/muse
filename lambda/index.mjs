@@ -12,14 +12,43 @@ export const handler = async (event) => {
     const body = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
     const { image, style, bpm, key, extraKeyword } = body;
 
-    // Step 1: Process the image with Rekognition
-    const params = {
+    // Step 1: Moderation Labels Check
+    const moderationParams = {
       Image: {
         Bytes: Buffer.from(image, 'base64'),
       },
     };
 
-    const rekognitionData = await rekognition.detectLabels(params).promise();
+    const moderationData = await rekognition.detectModerationLabels(moderationParams).promise();
+    const flaggedLabels = moderationData.ModerationLabels.filter(
+      (label) => label.Confidence >= 80 // Adjust threshold if needed
+    );
+
+    if (flaggedLabels.length > 0) {
+      console.error('Inappropriate content detected:', flaggedLabels);
+      return {
+        statusCode: 400,
+        body: JSON.stringify({
+          error: 'The uploaded image contains inappropriate content and cannot be processed.',
+          labels: flaggedLabels.map((label) => label.Name),
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'OPTIONS,POST,GET',
+          'Access-Control-Allow-Headers': 'Content-Type,Authorization',
+        },
+      };
+    }
+
+    // Step 2: Process the image with Rekognition
+    const labelParams = {
+      Image: {
+        Bytes: Buffer.from(image, 'base64'),
+      },
+    };
+
+    const rekognitionData = await rekognition.detectLabels(labelParams).promise();
     let labels = rekognitionData.Labels.map((label) => label.Name);
 
     // Filter out boring words
@@ -27,17 +56,17 @@ export const handler = async (event) => {
 
     const labelsString = labels.join(', ');
 
-    // Construct the OpenAI prompt
+    // Step 3: Construct the OpenAI prompt
     let prompt = '';
     if (style === 'Trop Rock') {
-      prompt = `Write a Trop Rock song with a relaxed vibe around ${bpm} BPM in the key of ${key} with lyrics prominently featuring the keyword "${extraKeyword}". Use the following vivid words creatively: ${labelsString}. The song should onlyhave 2 verses and a chorus. Write the song as Jimmy Buffett would. Use a common 3 or 4-chord progression suitable for the key, like I–V–vi–IV or I–vi–IV–V, and ensure the lyrics and chord changes fit smoothly with the BPM of ${bpm}. In the output, label where each chord change should take place.`;
+      prompt = `Write a Trop Rock song with a relaxed vibe around ${bpm} BPM in the key of ${key} with lyrics prominently featuring the keyword "${extraKeyword}". Use the following vivid words creatively: ${labelsString}. The song should only have 2 verses and a chorus. Write the song as Jimmy Buffett would. Use a common 3 or 4-chord progression suitable for the key, like I–V–vi–IV or I–vi–IV–V, and ensure the lyrics and chord changes fit smoothly with the BPM of ${bpm}. In the output, label where each chord change should take place. Do not repeat the chorus, the output should be in the format of "Verse 1 - Chorus - Verse 2`;
     } else if (style === 'Southern Blues') {
-      prompt = `Write a Southern Blues song with a soulful vibe around ${bpm} BPM in the key of ${key} with lyrics prominently featuring the keyword "${extraKeyword}". Use the following vivid words creatively: ${labelsString}. The song should only have 2 verses and a chorus. Write the song as Chris Stapleton would. Use a common 3 or 4-chord progression suitable for the key, like I–V–vi–IV or I–vi–IV–V, and ensure the lyrics and chord changes fit smoothly with the BPM of ${bpm}. In the output, label where each chord change should take place.`;
+      prompt = `Write a Southern Blues song with a soulful vibe around ${bpm} BPM in the key of ${key} with lyrics prominently featuring the keyword "${extraKeyword}". Use the following vivid words creatively: ${labelsString}. The song should only have 2 verses and a chorus. Write the song as Chris Stapleton would. Use a common 3 or 4-chord progression suitable for the key, like I–V–vi–IV or I–vi–IV–V, and ensure the lyrics and chord changes fit smoothly with the BPM of ${bpm}. In the output, label where each chord change should take place. Do not repeat the chorus, the output should be in the format of "Verse 1 - Chorus - Verse 2`;
     } else if (style === 'Honky Tonk Hits') {
-      prompt = `Write a song with an upbeat-bootstomping vibe around ${bpm} BPM in the key of ${key} with lyrics prominently featuring the keyword "${extraKeyword}". Use the following vivid words creatively: ${labelsString}. The song should only have 2 verses and a chorus. Write the song as Toby Keith would. Use a common 3 or 4-chord progression suitable for the key, like I–V–vi–IV or I–vi–IV–V, and ensure the lyrics and chord changes fit smoothly with the BPM of ${bpm}. In the output, label where each chord change should take place.`;
+      prompt = `Write a song with an upbeat-bootstomping vibe around ${bpm} BPM in the key of ${key} with lyrics prominently featuring the keyword "${extraKeyword}". Use the following vivid words creatively: ${labelsString}. The song should only have 2 verses and a chorus. Write the song as Toby Keith would. Use a common 3 or 4-chord progression suitable for the key, like I–V–vi–IV or I–vi–IV–V, and ensure the lyrics and chord changes fit smoothly with the BPM of ${bpm}. In the output, label where each chord change should take place. Do not repeat the chorus, the output should be in the format of "Verse 1 - Chorus - Verse 2`;
     }
 
-    // Step 2: Call OpenAI API
+    // Step 4: Call OpenAI API
     const openaiApiKey = process.env.OPENAI_API_KEY;
     const openaiResponse = await axios.post(
       'https://api.openai.com/v1/chat/completions',
