@@ -1,10 +1,10 @@
 # SongSnap Roadmap
 
 ## Milestone 1: Safety Features
-- [ ] **Implement NSFW Detection**  
+- [X] **Implement NSFW Detection**  
   Integrate AWS Rekognition to detect and prevent uploads of NSFW content. Test with sample images and handle edge cases.
 
-- [ ] **Add Hate Speech Filtering**  
+- [X] **Add Hate Speech Filtering**  
   Use an NLP API or pre-trained model to analyze text and block hate speech in image-generated song lyrics.
 
 ## Milestone 2: User Authentication
@@ -15,10 +15,10 @@
   Create a simple profile system for users to view past lyrics and manage account settings.
 
 ## Milestone 3: Landing Page & Branding
-- [ ] **Develop Landing Page for songsnap.ai**  
+- [X] **Develop Landing Page for songsnap.ai**  
   Create a responsive landing page with branding elements, logo, tagline, and links to the app.
 
-- [ ] **Configure Domain Name for Hosting**  
+- [X] **Configure Domain Name for Hosting**  
   Configure `songsnap.ai` to point to the production app with SSL support.
 
 - [ ] **Add Branding Elements to App**  
