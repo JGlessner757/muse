@@ -1,4 +1,4 @@
-![SongSnap](logo1.png)
+![SongSnap](branding-logo-primary.png)
 
 ### 🎶 Generate Song Lyrics from Your Images 🎶
 
